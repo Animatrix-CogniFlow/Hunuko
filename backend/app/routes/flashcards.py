@@ -11,37 +11,28 @@ db = get_firestore_client()
 @router.post("/generate/{document_id}")
 async def create_flashcards(
     document_id: str,
-    count: int = Query(default=10, ge=1, le=20, description="Number of flashcards to generate (max 20)"),
-    mode: str = Query(default="quick_recall", description="quick_recall or concept_check"),
-    language_code: str = Query(default="en", description="Language for output content"),
-    persona: str = Query(default="university", description="User persona: kid, secondary, university, casual"),
+    count: int = Query(..., ge=1, le=20, description="Number of flashcards to generate (1-20, REQUIRED)"),
+    mode: str = Query(..., description="quick_recall or concept_check (REQUIRED)"),
+    language_code: str = Query(default="en"),
+    persona: str = Query(default="university"),
     user: dict = Depends(get_current_user)
 ):
     """
     Generates flashcards for a document.
-
-    - count: how many cards (1-20, default 10)
-    - mode: quick_recall (short Q&A) or concept_check (deeper Q&A)
-    - language_code: language to generate flashcards in
-    - persona: adjusts tone and complexity of flashcards
+    count and mode are REQUIRED — no silent defaults.
     """
     if mode not in ["quick_recall", "concept_check"]:
-        raise HTTPException(status_code=400, detail="Mode must be quick_recall or concept_check")
-
+        raise HTTPException(status_code=400, detail="mode must be quick_recall or concept_check")
     if not validate_language(language_code):
         raise HTTPException(status_code=400, detail=f"Unsupported language code: {language_code}")
-
     if not validate_persona(persona):
-        raise HTTPException(status_code=400, detail=f"Invalid persona. Choose from: kid, secondary, university, casual")
+        raise HTTPException(status_code=400, detail="Invalid persona.")
 
     doc_ref = db.collection("documents").document(document_id)
     doc = doc_ref.get()
-
     if not doc.exists:
         raise HTTPException(status_code=404, detail="Document not found")
-
     data = doc.to_dict()
-
     if data["user_id"] != user["uid"]:
         raise HTTPException(status_code=403, detail="Access denied")
 
@@ -55,10 +46,7 @@ async def create_flashcards(
             persona=persona
         )
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to generate flashcards: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Failed to generate flashcards: {str(e)}")
 
     flashcard_ref = db.collection("flashcards").document()
     flashcard_ref.set({
@@ -86,13 +74,9 @@ async def create_flashcards(
 @router.get("/get/{document_id}")
 async def get_flashcards(
     document_id: str,
-    mode: str = Query(default="quick_recall", description="quick_recall or concept_check"),
+    mode: str = Query(default="quick_recall"),
     user: dict = Depends(get_current_user)
 ):
-    """
-    Fetches already saved flashcards for a document.
-    Checks mode so student can have both sets saved separately.
-    """
     results = db.collection("flashcards")\
         .where("document_id", "==", document_id)\
         .where("user_id", "==", user["uid"])\

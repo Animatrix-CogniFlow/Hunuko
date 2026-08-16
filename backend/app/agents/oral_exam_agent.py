@@ -31,7 +31,7 @@ async def transcribe_audio(audio_bytes: bytes, filename: str, language_code: str
             )
             return response.text.strip()
         except Exception as e:
-            print(f"Gemini audio transcription failed: {e}. Falling back to Groq Whisper.")
+            print(f"Gemini transcription failed: {e}. Falling back to Groq.")
     else:
         try:
             transcript = openai.audio.transcriptions.create(
@@ -40,9 +40,9 @@ async def transcribe_audio(audio_bytes: bytes, filename: str, language_code: str
             )
             return transcript.text
         except Exception as e:
-            print(f"OpenAI audio transcription failed: {e}. Falling back to Groq Whisper.")
+            print(f"OpenAI Whisper failed: {e}. Falling back to Groq.")
 
-    # Fallback to Groq Whisper
+    # Groq Whisper fallback
     try:
         transcript = groq_client.audio.transcriptions.create(
             model="whisper-large-v3",
@@ -50,13 +50,18 @@ async def transcribe_audio(audio_bytes: bytes, filename: str, language_code: str
         )
         return transcript.text
     except Exception as groq_err:
-        print(f"Groq Whisper transcription fallback failed: {groq_err}")
         raise groq_err
 
 
-async def generate_oral_questions(raw_text: str, subject: str, count: int = 5, output_language_code: str = "en", persona: str = "university") -> list:
+async def generate_oral_questions(
+    raw_text: str,
+    subject: str,
+    count: int = 5,
+    output_language_code: str = "en",
+    persona: str = "university"
+) -> list:
     """
-    Generates open ended oral exam questions from the document.
+    Generates open ended oral exam questions for EXAM MODE.
     Variation seed ensures questions are different on every attempt.
     """
     count = min(count, 10)
@@ -65,21 +70,20 @@ async def generate_oral_questions(raw_text: str, subject: str, count: int = 5, o
     persona_instruction = get_persona_instruction(persona)
 
     prompt = f"""
+    {language_instruction}
+
     You are an examiner conducting an oral exam on {subject}.
     Generate exactly {count} open ended questions based on the notes below.
     These questions will be asked verbally so they must be clear and conversational.
-    {language_instruction}
     {persona_instruction}
 
-    Important: This is attempt variation #{variation_seed}.
-    You MUST generate completely fresh questions different from any previous attempt.
-    Approach the content from different angles, test different concepts each time.
+    This is attempt variation #{variation_seed} — generate completely fresh questions.
 
     Return a JSON array like this:
     [
         {{
             "id": 1,
-            "question": "the question text written for this persona",
+            "question": "the question text written for this persona and language",
             "key_points": ["point the answer should cover", "another key point"]
         }}
     ]
@@ -87,8 +91,7 @@ async def generate_oral_questions(raw_text: str, subject: str, count: int = 5, o
     Rules:
     - Questions should require more than a one word answer
     - Each question should test understanding not just memory
-    - Write questions in the tone and style appropriate for the persona
-    - key_points are what a good answer should mention
+    - Write questions in the tone appropriate for the persona
     - Return only valid JSON, no extra text
 
     Notes:
@@ -114,15 +117,16 @@ async def evaluate_oral_answer(
     persona: str = "university"
 ) -> dict:
     """
-    Gemini evaluates the student's transcribed spoken answer.
-    Evaluation is content-based — works regardless of what language the student answered in.
+    Evaluates a student's spoken answer in EXAM MODE.
+    Content-based — works regardless of what language the student answered in.
     """
     language_instruction = get_language_instruction(output_language_code)
     persona_instruction = get_persona_instruction(persona)
 
     prompt = f"""
-    You are an examiner evaluating a student's oral answer in {subject}.
     {language_instruction}
+
+    You are an examiner evaluating a student's oral answer in {subject}.
     {persona_instruction}
 
     Note: The student may have answered in a different language than the question.
@@ -133,19 +137,19 @@ async def evaluate_oral_answer(
     Key points a good answer should cover: {key_points}
     Student's answer: {student_answer}
 
-    Evaluate the answer and return a JSON object:
+    Return a JSON object:
     {{
         "score": a number from 0 to 10,
-        "is_correct": true if the score is 7 or above and the student demonstrated sufficient understanding of the core concepts, false otherwise,
+        "is_correct": true if score is 7 or above,
         "understanding": "poor | fair | good | excellent",
-        "feedback": "feedback written in the tone appropriate for this persona",
-        "clue": "if not correct, a constructive, supportive hint/clue that guides the student's thinking towards the right answer without giving it away. If correct, this can be empty.",
-        "correct_answer": "a concise, complete model answer in the target language that covers all the key points perfectly",
+        "feedback": "feedback written in the tone appropriate for this persona and language",
+        "clue": "if not correct, a supportive hint without giving the answer away. If correct, leave empty.",
+        "correct_answer": "a concise complete model answer in the target language covering all key points",
         "covered": ["key points the student mentioned"],
         "missed": ["key points the student did not mention"]
     }}
 
-    Be encouraging but honest. Write feedback that fits the persona. Return only valid JSON, no extra text.
+    Return only valid JSON, no extra text.
     """
 
     response = generate_content_with_fallback(
@@ -156,3 +160,55 @@ async def evaluate_oral_answer(
     raw = response.text.strip()
     raw = re.sub(r"^```json|^```|```$", "", raw, flags=re.MULTILINE).strip()
     return json.loads(raw)
+
+
+async def interactive_oral_response(
+    student_question: str,
+    conversation_history: list,
+    raw_text: str,
+    subject: str,
+    output_language_code: str = "en",
+    persona: str = "university"
+) -> str:
+    """
+    INTERACTIVE MODE — Student asks questions verbally and the agent answers.
+    This is a voice-based study session, not an exam.
+    The agent responds conversationally to whatever the student asks.
+    """
+    language_instruction = get_language_instruction(output_language_code)
+    persona_instruction = get_persona_instruction(persona)
+
+    history_text = ""
+    for msg in conversation_history:
+        role = "Student" if msg["role"] == "student" else "Agent"
+        history_text += f"{role}: {msg['content']}\n"
+    history_text += f"Student: {student_question}\nAgent:"
+
+    prompt = f"""
+    {language_instruction}
+
+    You are a friendly oral study assistant helping a student learn {subject} through voice conversation.
+    {persona_instruction}
+
+    The student is studying this material:
+    {raw_text[:3000]}
+
+    You are in INTERACTIVE MODE — this is not an exam. The student asks YOU questions and you answer them.
+    - Answer the student's question clearly and conversationally
+    - Stay focused on the study material
+    - If the student asks something outside the material, gently redirect them
+    - Keep answers concise enough for a spoken conversation
+    - Encourage the student naturally
+
+    Conversation so far:
+    {history_text}
+
+    Respond naturally in the target language. Return only your spoken response, no JSON, no extra formatting.
+    """
+
+    response = generate_content_with_fallback(
+        client=gemini_client,
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+    return response.text.strip()
