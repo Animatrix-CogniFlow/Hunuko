@@ -1,4 +1,4 @@
-# CogniFlow
+# Hunuko
 
 An intelligent, AI-powered edtech platform engineered to eliminate the "illusion of competence" in secondary and tertiary students. By pivoting away from passive reading and video consumption, CogniFlow utilizes an **Agentic Socratic Retrieval-Augmented Generation (RAG)** pipeline to actively cross-examine students, identify conceptual gaps, and guide them toward mastery through conversational active recall.
 
