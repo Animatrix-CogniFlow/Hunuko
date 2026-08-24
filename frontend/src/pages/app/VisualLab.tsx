@@ -1,34 +1,37 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
   Atom,
-  Maximize2,
   Sigma,
   ArrowRight,
   Sparkles,
   Play,
-  RotateCcw,
   Loader2,
   Check,
   AlertCircle,
   HelpCircle,
   TrendingUp,
   FileText,
-  ChevronDown
+  ChevronDown,
+  Send,
+  Volume2,
+  VolumeX
 } from "lucide-react";
 import { PageContainer } from "../../components/shell/PageContainer";
 import { Card, CardBody } from "../../components/ui/Card";
 import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";
 import { AmbientBackground } from "../../components/visuals/AmbientBackground";
-import { aiService, type Scene, type SceneScript, type AnimationResponse } from "../../services/aiService";
+import { aiService, type Scene, type SceneScript } from "../../services/aiService";
 import { contentService } from "../../services/contentService";
 import { useChatStore } from "../../stores/useChatStore";
 import { cn } from "../../lib/utils";
 import { MarkdownLite } from "../../components/tutor/MarkdownLite";
+import { Mascot } from "../../components/visuals/Mascot";
+import { useMascotAudio } from "../../hooks/useMascotAudio";
 
 export default function VisualLab() {
   const navigate = useNavigate();
@@ -62,6 +65,55 @@ export default function VisualLab() {
   const [submittingFeedback, setSubmittingFeedback] = useState(false);
   const [regenAttempt, setRegenAttempt] = useState(1);
   const [error, setError] = useState<string | null>(null);
+
+  // Mascot & Audio states
+  const mascotAudio = useMascotAudio();
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatMessages, setChatMessages] = useState<Array<{ role: "user" | "assistant"; content: string }>>([
+    { role: "assistant", content: "Hi! Ask me anything about this diagram. I can highlight elements or point to them!" }
+  ]);
+  const [chatInput, setChatInput] = useState("");
+  const [mascotLoading, setMascotLoading] = useState(false);
+  const [mascotSessionId, setMascotSessionId] = useState<string | null>(null);
+  const [activeSpeechText, setActiveSpeechText] = useState("");
+
+  // Speak active scene content automatically on change
+  useEffect(() => {
+    if (isPlaying && animationScript?.scenes[sceneIndex]) {
+      const scene = animationScript.scenes[sceneIndex];
+      let speechText = "";
+      
+      if (scene.type === "concept_intro") {
+        speechText = `${scene.heading || ""}. ${scene.subheading || ""}`;
+      } else if (scene.type === "definition") {
+        speechText = `Let's define ${scene.term || ""}. ${scene.meaning || ""}`;
+      } else if (scene.type === "bullet_reveal") {
+        speechText = `${scene.heading || ""}. ${scene.points?.join(". ") || ""}`;
+      } else if (scene.type === "flow_diagram") {
+        speechText = `${scene.heading || ""}. The process flows as follows: ${scene.steps?.join(". Then, ") || ""}`;
+      } else if (scene.type === "comparison") {
+        speechText = `${scene.heading || ""}. Comparing: ${scene.left?.label || ""}: ${scene.left?.points.join(". ") || ""}. Versus ${scene.right?.label || ""}: ${scene.right?.points.join(". ") || ""}`;
+      } else if (scene.type === "equation") {
+        speechText = `${scene.heading || ""}. The formula elements are: ${scene.elements?.join(" ") || ""}`;
+      } else if (scene.type === "timeline") {
+        speechText = `${scene.heading || ""}. The sequence is: ${scene.events?.map(e => `${e.label}, ${e.description}`).join(". ") || ""}`;
+      } else if (scene.type === "summary") {
+        speechText = `${scene.heading || ""}. In summary: ${scene.points?.join(". ") || ""}`;
+      }
+
+      setActiveSpeechText(speechText);
+      
+      const sceneActions = (animationScript as any).actions?.filter((act: any) => {
+        return act.action_type && act.timestamp_sec !== undefined;
+      }) || [];
+
+      mascotAudio.speak(speechText, sceneActions);
+    } else {
+      mascotAudio.cancel();
+    }
+    // Clean up timers on scene change
+    return () => mascotAudio.cancel();
+  }, [sceneIndex, isPlaying, animationScript]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -225,6 +277,49 @@ export default function VisualLab() {
       setError(err.message || "Failed to simplify this animation.");
     } finally {
       setSubmittingFeedback(false);
+    }
+  }
+
+  async function handleSendMascotMessage() {
+    if (!chatInput.trim() || !selectedDocId) return;
+
+    const userMsg = chatInput.trim();
+    setChatInput("");
+    setChatMessages((prev) => [...prev, { role: "user", content: userMsg }]);
+    setMascotLoading(true);
+
+    // Stop active speaker immediately on user interruption
+    mascotAudio.cancel();
+
+    try {
+      const activeScene = animationScript?.scenes[sceneIndex];
+      const visualState = {
+        sceneId: activeScene ? String(activeScene.id) : "unknown",
+        activeEntityId: mascotAudio.activeHighlightId,
+        sceneGraph: activeScene || null,
+        precedingNarration: activeSpeechText,
+        sessionId: mascotSessionId,
+      };
+
+      const res = await aiService.mascotChat(selectedDocId, userMsg, visualState);
+      
+      setMascotSessionId(res.sessionId);
+      setChatMessages((prev) => [...prev, { role: "assistant", content: res.reply }]);
+
+      const sceneAction = res.action_trigger ? [{
+        action_type: res.action_trigger,
+        target_entity_id: res.target_entity_id,
+        timestamp_sec: 0.1
+      }] : [];
+      
+      mascotAudio.speak(res.reply, sceneAction);
+    } catch (err: any) {
+      setChatMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Oops, I had a connection issue. Let's try again!" },
+      ]);
+    } finally {
+      setMascotLoading(false);
     }
   }
 
@@ -453,11 +548,11 @@ export default function VisualLab() {
 
                   {/* Top Bar info inside Canvas */}
                   <div className="relative z-10 flex justify-between items-center text-white">
-                    <Badge tone="flow" className="border-gold-500/30">
+                    <Badge tone={"flow" as any} className="border-gold-500/30">
                       <Atom className="h-4 w-4 mr-2" /> {selectedConcept || "Topic Summary"}
                     </Badge>
                     {regenAttempt > 1 && (
-                      <Badge tone="danger" className="text-rose-400 bg-rose-500/10 border-rose-500/20">
+                      <Badge tone={"danger" as any} className="text-rose-400 bg-rose-500/10 border-rose-500/20">
                         Revision {regenAttempt} (Easier Explanation)
                       </Badge>
                     )}
@@ -466,20 +561,20 @@ export default function VisualLab() {
                   {/* Dynamic Scene Renderer (Framer Motion Canvas) */}
                   <div className="relative z-10 flex-1 flex items-center justify-center py-6">
                     <AnimatePresence mode="wait">
-                      <SceneRenderer key={sceneIndex} scene={animationScript.scenes[sceneIndex]} />
+                      <SceneRenderer key={sceneIndex} scene={animationScript.scenes[sceneIndex]} activeHighlightId={mascotAudio.activeHighlightId} />
                     </AnimatePresence>
                   </div>
 
                   {/* Navigation and Playback Controls */}
-                  <div className="relative z-10 flex items-center justify-between border-t border-white/10 pt-4 bg-black/10 backdrop-blur-sm px-4 py-2 rounded-xl">
+                  <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 bg-black/20 backdrop-blur-md px-5 py-3 rounded-2xl">
                     <div className="flex gap-2">
                       {animationScript.scenes.map((s, i) => (
                         <button
                           key={s.id}
                           onClick={() => setSceneIndex(i)}
                           className={cn(
-                            "h-1.5 rounded-full transition-all duration-300",
-                            i === sceneIndex ? "w-8 bg-gold-500 shadow-lg" : "w-2 bg-white/20 hover:bg-white/40"
+                            "h-2 rounded-full transition-all duration-300",
+                            i === sceneIndex ? "w-8 bg-gold-500 shadow-[0_0_8px_#eab308]" : "w-2 bg-white/20 hover:bg-white/40"
                           )}
                           aria-label={`Go to scene ${i + 1}`}
                         />
@@ -487,6 +582,29 @@ export default function VisualLab() {
                     </div>
 
                     <div className="flex items-center gap-4 text-white">
+                      {/* Audio Speak / Pause Interruption Control */}
+                      <button
+                        onClick={() => setIsPlaying(!isPlaying)}
+                        className={cn(
+                          "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border",
+                          isPlaying 
+                            ? "bg-gold-500/10 border-gold-500/30 text-gold-400 hover:bg-gold-500/20" 
+                            : "bg-white/5 border-white/10 text-silver-300 hover:bg-white/10"
+                        )}
+                      >
+                        {isPlaying ? (
+                          <>
+                            <Volume2 className="h-3.5 w-3.5 animate-pulse text-gold-400" />
+                            <span>Mute Narrative</span>
+                          </>
+                        ) : (
+                          <>
+                            <VolumeX className="h-3.5 w-3.5 text-silver-400" />
+                            <span>Speak Narrative</span>
+                          </>
+                        )}
+                      </button>
+
                       <span className="text-xs text-silver-400 font-medium">
                         Scene {sceneIndex + 1} of {animationScript.total_scenes}
                       </span>
@@ -599,13 +717,113 @@ export default function VisualLab() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Interactive Mascot & Q&A Chat Panel */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3 pointer-events-none">
+        
+        {/* Chat Panel */}
+        <AnimatePresence>
+          {chatOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 30, scale: 0.95 }}
+              className="w-80 h-96 rounded-2xl border border-silver-300 bg-white/95 dark:border-white/10 dark:bg-abyss-900/95 backdrop-blur-xl shadow-2xl p-4 flex flex-col justify-between pointer-events-auto"
+            >
+              {/* Header */}
+              <div className="flex justify-between items-center border-b border-silver-200 dark:border-white/5 pb-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
+                  <h4 className="font-semibold text-xs text-silver-800 dark:text-silver-200 uppercase tracking-wider">Ask Hunuko (Mascot)</h4>
+                </div>
+                <button
+                  onClick={() => setChatOpen(false)}
+                  className="text-xs text-silver-400 hover:text-silver-600 dark:hover:text-silver-200"
+                >
+                  Hide
+                </button>
+              </div>
+
+              {/* Chat History */}
+              <div className="flex-1 overflow-y-auto space-y-2.5 pr-1 mb-2 scrollbar-thin">
+                {chatMessages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={cn(
+                      "max-w-[85%] rounded-2xl px-3 py-2 text-xs leading-relaxed",
+                      msg.role === "user"
+                        ? "ml-auto bg-gold-500 text-abyss-900 rounded-br-none font-medium"
+                        : "mr-auto bg-silver-100 text-silver-800 dark:bg-white/5 dark:text-silver-300 rounded-bl-none"
+                    )}
+                  >
+                    <MarkdownLite text={msg.content} />
+                  </div>
+                ))}
+                {mascotLoading && (
+                  <div className="mr-auto bg-silver-100 text-silver-800 dark:bg-white/5 dark:text-silver-300 rounded-2xl rounded-bl-none px-3 py-2 text-xs flex items-center gap-1.5 w-18">
+                    <span className="w-1.5 h-1.5 bg-silver-400 rounded-full animate-bounce" />
+                    <span className="w-1.5 h-1.5 bg-silver-400 rounded-full animate-bounce [animation-delay:0.2s]" />
+                    <span className="w-1.5 h-1.5 bg-silver-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+                  </div>
+                )}
+              </div>
+
+              {/* Input Box */}
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSendMascotMessage()}
+                  placeholder="Ask Hunuko about this diagram..."
+                  disabled={mascotLoading}
+                  className="flex-1 min-w-0 bg-silver-50 dark:bg-abyss-950 border border-silver-300 dark:border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold-500"
+                />
+                <Button
+                  size="icon"
+                  onClick={handleSendMascotMessage}
+                  disabled={mascotLoading || !chatInput.trim()}
+                  className="h-8 w-8 bg-gold-500 hover:bg-gold-400 text-abyss-900 border-none shrink-0"
+                >
+                  <Send className="h-3.5 w-3.5" />
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Mascot Toggle Button (Floating Face) */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          <motion.button
+            onClick={() => setChatOpen(!chatOpen)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className={cn(
+              "flex h-20 w-20 items-center justify-center rounded-full shadow-2xl transition-all duration-300 relative border overflow-hidden",
+              chatOpen 
+                ? "bg-abyss-900 border-gold-500/40" 
+                : "bg-gradient-to-tr from-abyss-950 to-abyss-900 border-white/10 hover:border-gold-500/30"
+            )}
+          >
+            <Mascot
+              isTalking={mascotAudio.isTalking}
+              pointLeft={mascotAudio.pointLeft}
+              pointRight={mascotAudio.pointRight}
+              celebrate={mascotAudio.celebrate}
+              idle={!mascotAudio.isTalking && !mascotAudio.pointLeft && !mascotAudio.pointRight}
+              className="scale-90"
+            />
+          </motion.button>
+        </div>
+
+      </div>
     </PageContainer>
   );
 }
 
 // ── Scene Renderer (Canvas Painter) ───────────────────────────────────
 
-function SceneRenderer({ scene }: { scene: Scene }) {
+function SceneRenderer({ scene, activeHighlightId }: { scene: Scene; activeHighlightId: string | null }) {
 
   // Custom renders for different Scene types
   switch (scene.type) {
@@ -634,13 +852,22 @@ function SceneRenderer({ scene }: { scene: Scene }) {
         </motion.div>
       );
 
-    case "definition":
+    case "definition": {
+      const isHighlighted = activeHighlightId && (
+        activeHighlightId.toLowerCase() === "definition" || 
+        activeHighlightId.toLowerCase() === scene.term?.toLowerCase()
+      );
       return (
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
-          className="w-full max-w-lg p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md text-white shadow-2xl relative"
+          className={cn(
+            "w-full max-w-lg p-8 rounded-2xl border backdrop-blur-md text-white shadow-2xl relative transition-all duration-300",
+            isHighlighted 
+              ? "border-gold-400 bg-gold-500/10 shadow-[0_0_25px_#eab308] scale-105" 
+              : "border-white/10 bg-white/5"
+          )}
         >
           <div className="absolute -top-3 left-6 bg-gold-500 text-abyss-950 font-bold text-xs uppercase px-3.5 py-1 rounded-full">
             Definition
@@ -653,6 +880,7 @@ function SceneRenderer({ scene }: { scene: Scene }) {
           </div>
         </motion.div>
       );
+    }
 
     case "bullet_reveal":
       return (
@@ -663,22 +891,33 @@ function SceneRenderer({ scene }: { scene: Scene }) {
             </h3>
           )}
           <div className="space-y-3">
-            {scene.points?.map((pt, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.15, type: "spring", stiffness: 100 }}
-                className="flex items-start gap-3 bg-white/5 p-4 rounded-xl border border-white/5"
-              >
-                <div className="h-5 w-5 shrink-0 rounded-full bg-gold-500/20 flex items-center justify-center mt-0.5">
-                  <Check className="h-3.5 w-3.5 text-gold-400" />
-                </div>
-                <div className="text-sm md:text-base text-silver-300 font-medium text-left">
-                  <MarkdownLite text={pt} />
-                </div>
-              </motion.div>
-            ))}
+            {scene.points?.map((pt, idx) => {
+              const isHighlighted = activeHighlightId && (
+                activeHighlightId === String(idx + 1) ||
+                pt.toLowerCase().includes(activeHighlightId.toLowerCase())
+              );
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.15, type: "spring", stiffness: 100 }}
+                  className={cn(
+                    "flex items-start gap-3 p-4 rounded-xl border transition-all duration-300",
+                    isHighlighted
+                      ? "bg-gold-500/15 border-gold-500 shadow-[0_0_15px_rgba(234,179,8,0.35)] scale-[1.03]"
+                      : "bg-white/5 border-white/5"
+                  )}
+                >
+                  <div className="h-5 w-5 shrink-0 rounded-full bg-gold-500/20 flex items-center justify-center mt-0.5">
+                    <Check className="h-3.5 w-3.5 text-gold-400" />
+                  </div>
+                  <div className="text-sm md:text-base text-silver-300 font-medium text-left">
+                    <MarkdownLite text={pt} />
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       );
@@ -692,32 +931,43 @@ function SceneRenderer({ scene }: { scene: Scene }) {
             </h3>
           )}
           <div className="flex flex-col md:flex-row md:items-center justify-center gap-4">
-            {scene.steps?.map((step, idx) => (
-              <div key={idx} className="flex flex-col md:flex-row items-center gap-4">
-                <motion.div
-                  initial={{ scale: 0.9, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: idx * 0.2 }}
-                  className="bg-gradient-to-br from-gold-500/10 to-gold-600/5 border border-gold-500/25 p-4 rounded-xl text-center shadow-lg min-w-[120px] max-w-[180px]"
-                >
-                  <span className="text-xs font-mono font-bold text-gold-500 block mb-1">Step {idx + 1}</span>
-                  <span className="text-sm font-semibold text-white block">
-                    <MarkdownLite text={step} />
-                  </span>
-                </motion.div>
-
-                {idx < (scene.steps?.length ?? 0) - 1 && (
+            {scene.steps?.map((step, idx) => {
+              const isHighlighted = activeHighlightId && (
+                activeHighlightId === String(idx + 1) ||
+                step.toLowerCase().includes(activeHighlightId.toLowerCase())
+              );
+              return (
+                <div key={idx} className="flex flex-col md:flex-row items-center gap-4">
                   <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: idx * 0.2 + 0.1 }}
-                    className="flex justify-center"
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: idx * 0.2 }}
+                    className={cn(
+                      "bg-gradient-to-br p-4 rounded-xl text-center shadow-lg min-w-[120px] max-w-[180px] border transition-all duration-300",
+                      isHighlighted
+                        ? "from-gold-500/20 to-gold-600/10 border-gold-400 scale-108 shadow-[0_0_20px_rgba(234,179,8,0.5)]"
+                        : "from-gold-500/10 to-gold-600/5 border-gold-500/25"
+                    )}
                   >
-                    <ArrowRight className="h-5 w-5 text-gold-500/50 rotate-90 md:rotate-0" />
+                    <span className="text-xs font-mono font-bold text-gold-500 block mb-1">Step {idx + 1}</span>
+                    <span className="text-sm font-semibold text-white block">
+                      <MarkdownLite text={step} />
+                    </span>
                   </motion.div>
-                )}
-              </div>
-            ))}
+
+                  {idx < (scene.steps?.length ?? 0) - 1 && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: idx * 0.2 + 0.1 }}
+                      className="flex justify-center"
+                    >
+                      <ArrowRight className="h-5 w-5 text-gold-500/50 rotate-90 md:rotate-0" />
+                    </motion.div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       );

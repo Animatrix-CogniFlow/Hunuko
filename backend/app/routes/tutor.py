@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from app.core.firebase_auth import get_current_user, get_firestore_client
-from app.agents.tutor_agent import chat_with_tutor, chat_with_tutor_stream
+from app.agents.tutor_agent import chat_with_tutor, chat_with_tutor_stream, chat_with_mascot
 from app.agents.language_agent import validate_language
 from app.agents.persona_agent import validate_persona
 import json
@@ -19,6 +19,86 @@ class ChatRequest(BaseModel):
     language_code: str = "en"
     persona: str = "university"
     page_content: str | None = None
+
+class MascotChatRequest(BaseModel):
+    document_id: str
+    message: str
+    scene_id: str
+    active_entity_id: str | None = None
+    scene_graph: dict | list | None = None
+    preceding_narration: str | None = None
+    session_id: str | None = None
+    persona: str = "university"
+    language_code: str = "en"
+
+@router.post("/mascot-chat")
+async def mascot_chat(
+    body: MascotChatRequest,
+    user: dict = Depends(get_current_user)
+):
+    """
+    Mascot dialogue handler contextually grounded in active visual state and scene graph.
+    """
+    if not validate_language(body.language_code):
+        raise HTTPException(status_code=400, detail=f"Unsupported language code: {body.language_code}")
+
+    if not validate_persona(body.persona):
+        raise HTTPException(status_code=400, detail=f"Invalid persona.")
+
+    doc_ref = db.collection("documents").document(body.document_id)
+    doc = doc_ref.get()
+    if not doc.exists:
+        raise HTTPException(status_code=404, detail="Document not found")
+    doc_data = doc.to_dict()
+    if doc_data["user_id"] != user["uid"]:
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    if body.session_id:
+        session_ref = db.collection("tutor_sessions").document(body.session_id)
+        session = session_ref.get()
+        if not session.exists:
+            raise HTTPException(status_code=404, detail="Session not found")
+        conversation_history = session.to_dict().get("history", [])
+    else:
+        session_ref = db.collection("tutor_sessions").document()
+        conversation_history = []
+        session_ref.set({
+            "user_id": user["uid"],
+            "document_id": body.document_id,
+            "title": f"Mascot Chat - {body.scene_id}",
+            "subject": doc_data["subject"],
+            "language_code": body.language_code,
+            "persona": body.persona,
+            "history": [],
+            "created_at": datetime.datetime.utcnow().isoformat()
+        })
+
+    result = await chat_with_mascot(
+        user_message=body.message,
+        conversation_history=conversation_history,
+        scene_id=body.scene_id,
+        active_entity_id=body.active_entity_id,
+        scene_graph=body.scene_graph,
+        preceding_narration=body.preceding_narration,
+        persona=body.persona,
+        output_language_code=body.language_code
+    )
+
+    conversation_history.append({"role": "user", "content": body.message})
+    conversation_history.append({"role": "assistant", "content": result.get("reply", "")})
+
+    session_ref.update({
+        "history": conversation_history,
+        "last_updated": datetime.datetime.utcnow().isoformat()
+    })
+
+    return {
+        "session_id": session_ref.id,
+        "reply": result.get("reply", ""),
+        "action_trigger": result.get("action_trigger", "idle"),
+        "target_entity_id": result.get("target_entity_id"),
+        "history": conversation_history
+    }
 
 @router.post("/chat")
 async def tutor_chat(
