@@ -96,9 +96,9 @@ export default function SignIn() {
         </Button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-silver-600 dark:text-cobalt-400/60">
-        New to CogniFlow?{" "}
-        <Link to="/signup" className="font-medium text-gold-600 hover:underline dark:text-cobalt-300">
+      <p className="mt-6 text-center text-sm text-[#2D3E3A] dark:text-[#B2C9C5]">
+        New to Hunuko?{" "}
+        <Link to="/signup" className="font-semibold text-[#D4AF37] hover:underline">
           Create an account
         </Link>
       </p>

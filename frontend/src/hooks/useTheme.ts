@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { usePreferencesStore } from "../stores/usePreferencesStore";
 
-/** Syncs theme + accessibility preferences to the document root. */
+/** Syncs theme + accessibility preferences to the document root and localStorage. */
 export function useTheme() {
   const theme = usePreferencesStore((s) => s.theme);
   const highContrast = usePreferencesStore((s) => s.highContrast);
@@ -10,8 +10,15 @@ export function useTheme() {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.toggle("dark", theme === "dark");
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
     root.dataset.contrast = highContrast ? "high" : "normal";
+    try {
+      localStorage.setItem("theme", theme);
+    } catch {}
   }, [theme, highContrast]);
 
   return { theme, toggleTheme, setTheme };

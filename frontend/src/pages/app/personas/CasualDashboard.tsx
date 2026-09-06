@@ -114,7 +114,7 @@ export default function CasualDashboard({ onChangePersona }: { onChangePersona: 
                     </div>
                     <h3 className="text-lg font-semibold mb-2">Welcome to Your Mastery Console</h3>
                     <p className="text-xs text-silver-600 dark:text-silver-400 mb-6 leading-relaxed font-medium">
-                      CogniFlow optimizes professional upskilling through context-pinned active recall. Follow these simple steps to build your study pipeline:
+                      Hunuko optimizes professional upskilling through context-pinned active recall. Follow these simple steps to build your study pipeline:
                     </p>
                   </div>
 

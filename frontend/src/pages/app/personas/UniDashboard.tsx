@@ -117,9 +117,9 @@ export default function UniDashboard({ onChangePersona }: { onChangePersona: () 
                     <div className="h-16 w-16 rounded-full bg-gold-500/10 flex items-center justify-center mb-6">
                       <GraduationCap className="h-8 w-8 text-gold-500" />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Welcome to CogniFlow, Academic!</h3>
+                    <h3 className="text-xl font-bold mb-2">Welcome to Hunuko, Academic!</h3>
                     <p className="text-sm text-silver-600 dark:text-silver-400 mb-8 leading-relaxed">
-                      CogniFlow utilizes agentic Socratic Retrieval-Augmented Generation to stress-test your comprehension of research papers and textbooks. Here is how to begin:
+                      Hunuko utilizes agentic Socratic Retrieval-Augmented Generation to stress-test your comprehension of research papers and textbooks. Here is how to begin:
                     </p>
                   </div>
 

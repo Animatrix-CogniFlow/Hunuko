@@ -127,7 +127,7 @@ export default function Upload() {
           Add Learning Material
         </h1>
         <p className="mt-2 text-silver-600 dark:text-silver-400">
-          Upload your notes, slides, or textbook chapters (PDF) to start learning. CogniFlow will read the file, summarize the core topics, and create your personalized study space.
+          Upload your notes, slides, or textbook chapters (PDF) to start learning. Hunuko will read the file, summarize the core topics, and create your personalized study space.
         </p>
       </motion.div>
 

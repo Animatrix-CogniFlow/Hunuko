@@ -163,7 +163,7 @@ function OnboardingPersonaSelection({ onSelect }: { onSelect: (p: string) => voi
           Who are you?
         </motion.h1>
         <p className="mt-2 text-silver-400 text-sm">
-          CogniFlow adapts everything — animations, explanations, quizzes and feedback — based on who you are.
+          Hunuko adapts everything — animations, explanations, quizzes and feedback — based on who you are.
         </p>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2 text-left">

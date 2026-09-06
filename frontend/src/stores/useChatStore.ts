@@ -43,7 +43,7 @@ function seed(): ExtendedConversation {
       {
         id: uid("msg"),
         role: "assistant",
-        content: "Hi — I am your CogniFlow tutor. Select a document above, then ask me anything about it.",
+        content: "Hi — I am your Hunuko tutor. Select a document above, then ask me anything about it.",
         createdAt: Date.now(),
       },
     ],

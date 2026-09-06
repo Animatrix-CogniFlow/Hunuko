@@ -132,7 +132,7 @@ export default function Settings() {
           Settings
         </h1>
         <p className="mt-1 text-sm text-silver-600 dark:text-cobalt-400">
-          Personalise your CogniFlow environment.
+          Personalise your Hunuko environment.
         </p>
       </div>
 

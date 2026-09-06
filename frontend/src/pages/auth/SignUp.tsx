@@ -58,7 +58,7 @@ export default function SignUp() {
             We sent a verification link to <strong>{email}</strong>. Click it to activate your account.
           </p>
           <p className="mt-2 text-xs text-cobalt-600 dark:text-cobalt-400/70">
-            You can still use CogniFlow while you verify — some features may be limited until you do.
+            You can still use Hunuko while you verify — some features may be limited until you do.
           </p>
         </div>
         <div className="mt-4 flex items-center gap-2 rounded-xl border border-silver-200 bg-silver-50 px-4 py-3 text-xs text-silver-600 dark:border-white/10 dark:bg-white/[0.02] dark:text-cobalt-400/60">
@@ -73,7 +73,7 @@ export default function SignUp() {
           .
         </div>
         <Button className="mt-5 w-full" onClick={() => navigate("/onboarding")}>
-          Continue to CogniFlow
+          Continue to Hunuko
         </Button>
       </AuthLayout>
     );

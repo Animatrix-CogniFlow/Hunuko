@@ -15,13 +15,13 @@ interface ButtonProps
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-gold-500 text-white hover:bg-gold-400 shadow-lg shadow-gold-500/25 dark:bg-cobalt-600 dark:hover:bg-cobalt-500 dark:shadow-cobalt-700/30",
+    "bg-[#D4AF37] text-[#070B0A] hover:bg-[#e0be4d] font-bold shadow-lg shadow-[#D4AF37]/25 transition-all",
   secondary:
-    "bg-silver-200 text-silver-900 hover:bg-silver-300 dark:bg-abyss-700 dark:text-cobalt-100 dark:hover:bg-abyss-600",
+    "bg-silver-200 text-[#0B1311] hover:bg-silver-300 border border-silver-300 dark:bg-[#111A18] dark:text-[#F8FAFA] dark:border-[#96C4BB]/30 dark:hover:bg-[#152220] dark:hover:border-[#96C4BB]/50 transition-all",
   ghost:
-    "text-silver-600 hover:bg-silver-200 hover:text-silver-900 dark:text-cobalt-300 dark:hover:bg-abyss-700 dark:hover:text-cobalt-100",
+    "text-[#2D3E3A] hover:text-[#0B1311] hover:bg-silver-200 dark:text-[#B2C9C5] dark:hover:text-[#F8FAFA] dark:hover:bg-[#507C7C]/20 transition-colors",
   outline:
-    "border border-silver-300 text-silver-700 hover:bg-silver-100 dark:border-abyss-600 dark:text-cobalt-200 dark:hover:bg-abyss-700",
+    "border border-[#96C4BB]/40 text-[#2D3E3A] hover:text-[#0B1311] hover:bg-[#507C7C]/10 dark:border-[#96C4BB]/40 dark:text-[#B2C9C5] dark:hover:text-[#F8FAFA] dark:hover:bg-[#507C7C]/20 dark:hover:border-[#96C4BB]/70 backdrop-blur-sm transition-all",
   danger: "bg-rose-600 text-white hover:bg-rose-500 shadow-lg shadow-rose-600/25",
 };
 

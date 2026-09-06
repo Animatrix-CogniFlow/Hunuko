@@ -1,5 +1,5 @@
 // ============================================================
-// CogniFlow — shared domain types
+// Hunuko — shared domain types
 // ============================================================
 
 export type ThemeMode   = "light" | "dark";

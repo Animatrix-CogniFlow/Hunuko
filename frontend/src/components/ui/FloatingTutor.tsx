@@ -49,7 +49,7 @@ export function FloatingTutor({ persona, documentId }: FloatingTutorProps) {
       default:
         return {
           avatar: "🤖",
-          name: "CogniFlow AI",
+          name: "Hunuko AI",
           color: "bg-abyss-800",
           text: "Upload your research. I will cross-examine your understanding.",
         };

@@ -123,7 +123,7 @@ export default function SecondaryDashboard({ onChangePersona }: { onChangePerson
                     </div>
                     <h3 className="text-xl font-bold mb-1 text-abyss-950 dark:text-white">Get Ready to Ace Your Exams!</h3>
                     <p className="text-xs text-silver-600 dark:text-silver-400 mb-6 leading-relaxed font-medium">
-                      CogniFlow converts your textbooks and syllabus study sheets into active learning toolkits. Follow this checklist to begin:
+                      Hunuko converts your textbooks and syllabus study sheets into active learning toolkits. Follow this checklist to begin:
                     </p>
                   </div>
 

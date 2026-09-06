@@ -21,12 +21,12 @@ export function AmbientBackground({
     <div
       className={cn("pointer-events-none absolute inset-0 -z-10 overflow-hidden", className)}
     >
-      {/* Light mode: warm silver/gold blobs; Dark mode: blue blobs */}
+      {/* Animatrix Tranquil Greenscape: Muted deep teals, gold accents, and deep void ambience */}
       <Blob
         index={0}
         animate={q.animate}
         blur={q.blur}
-        className="-left-32 top-[-10%] h-[380px] w-[380px] bg-gold-200/30 dark:bg-cobalt-500/20"
+        className="-left-32 top-[-10%] h-[420px] w-[420px] bg-[#507C7C]/20 dark:bg-[#507C7C]/18"
         path={{ x: [0, 50, 0], y: [0, 36, 0] }}
         duration={22}
         visible={blobCount >= 1}
@@ -35,7 +35,7 @@ export function AmbientBackground({
         index={1}
         animate={q.animate}
         blur={q.blur}
-        className="right-[-10%] top-1/3 h-[320px] w-[320px] bg-silver-300/40 dark:bg-cobalt-700/25"
+        className="right-[-10%] top-1/3 h-[360px] w-[360px] bg-[#96C4BB]/15 dark:bg-[#96C4BB]/12"
         path={{ x: [0, -42, 0], y: [0, -26, 0] }}
         duration={26}
         delay={2}
@@ -45,7 +45,7 @@ export function AmbientBackground({
         index={2}
         animate={q.animate}
         blur={q.blur}
-        className="bottom-[-15%] left-1/3 h-[340px] w-[340px] bg-gold-100/25 dark:bg-cobalt-900/30"
+        className="bottom-[-15%] left-1/3 h-[380px] w-[380px] bg-[#D4AF37]/12 dark:bg-[#D4AF37]/10"
         path={{ x: [0, 34, 0], y: [0, -32, 0] }}
         duration={24}
         delay={4}
@@ -139,8 +139,8 @@ function ParticleField({ profile, dense }: { profile: QualityProfile; dense?: bo
 
       ctx!.clearRect(0, 0, w, h);
       const dark = isDark();
-      // Light: warm gold-tinted dots; Dark: cool blue dots
-      const dot = dark ? "rgba(100,160,255,0.45)" : "rgba(180,144,15,0.40)";
+      // Animatrix: tranquil teal highlight dots in dark mode, warm gold in light mode
+      const dot = dark ? "rgba(150,196,187,0.45)" : "rgba(212,175,55,0.40)";
       ctx!.fillStyle = dot;
 
       for (let i = 0; i < particles.length; i++) {
@@ -155,7 +155,7 @@ function ParticleField({ profile, dense }: { profile: QualityProfile; dense?: bo
       }
 
       if (profile.connections) {
-        const linkBase = dark ? "100,160,255" : "180,144,15";
+        const linkBase = dark ? "80,124,124" : "212,175,55";
         ctx!.lineWidth = 0.6;
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];

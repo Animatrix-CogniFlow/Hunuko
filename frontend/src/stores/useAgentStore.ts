@@ -2,7 +2,7 @@ import { create } from "zustand";
 import type { Agent, AgentId } from "../lib/types";
 import { sleep } from "../lib/utils";
 
-// The agents page now shows the real CogniFlow agents — not fake data from contentService.
+// The agents page now shows the real Hunuko agents — not fake data from contentService.
 // These are the actual backend agents that power the product.
 const REAL_AGENTS: Agent[] = [
   { id: "story",    name: "Ingestion Agent",   role: "PDF extraction & concept mapping",  status: "idle" },

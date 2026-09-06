@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, MessagesSquare, Sparkles, ArrowRight } from "lucide-react";
 import { Button } from "../../components/ui/Button";
-import { Logo } from "../../components/brand/Logo";
+import { BrandLogo } from "../../components/brand/BrandLogo";
 import { OrchestrationOrb } from "../../components/visuals/OrchestrationOrb";
 
 const STEPS = [
   {
     icon: Upload,
     title: "Upload anything",
-    body: "Drop in notes, PDFs, or slides. CogniFlow parses and understands them instantly.",
+    body: "Drop in notes, PDFs, or slides. Hunuko parses and understands them instantly.",
   },
   {
     icon: Sparkles,
@@ -37,7 +37,7 @@ export default function Onboarding() {
 
       <div className="relative w-full max-w-lg text-center z-10">
         <div className="mb-8 flex justify-center">
-          <Logo size={40} />
+          <BrandLogo size={40} textClassName="text-white" />
         </div>
 
         <motion.div
@@ -85,7 +85,7 @@ export default function Onboarding() {
             <Button
               onClick={() => (step < STEPS.length - 1 ? setStep(step + 1) : navigate("/app"))}
             >
-              {step < STEPS.length - 1 ? "Next" : "Enter CogniFlow"}
+              {step < STEPS.length - 1 ? "Next" : "Enter Hunuko"}
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>

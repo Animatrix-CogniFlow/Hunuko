@@ -53,7 +53,7 @@ export function SpotlightCard({
     ry.set(0);
   }
 
-  const spotlight = useMotionTemplate`radial-gradient(200px circle at ${mx}% ${my}%, rgba(88,141,255,0.16), transparent 70%)`;
+  const spotlight = useMotionTemplate`radial-gradient(220px circle at ${mx}% ${my}%, rgba(150,196,187,0.18), transparent 70%)`;
 
   return (
     <motion.div
@@ -63,9 +63,10 @@ export function SpotlightCard({
       onMouseLeave={handleLeave}
       style={enabled && q.animate && tilt ? { rotateX: rx, rotateY: ry, transformPerspective: 900 } : undefined}
       className={cn(
-        "group relative overflow-hidden rounded-2xl border border-silver-300 bg-white transition-colors",
-        "dark:border-white/[0.06] dark:bg-abyss-800",
-        "hover:border-gold-400/70 dark:hover:border-gold-400/30",
+        "group relative overflow-hidden rounded-2xl border transition-all duration-300",
+        "border-[#96C4BB]/30 bg-white/95 text-[#0B1311] shadow-sm",
+        "dark:border-[#96C4BB]/30 dark:bg-[#0E1715]/90 dark:text-[#F8FAFA] backdrop-blur-md",
+        "hover:border-[#96C4BB]/60 dark:hover:border-[#96C4BB]/60 hover:shadow-[0_8px_30px_rgba(80,124,124,0.22)]",
         className
       )}
     >

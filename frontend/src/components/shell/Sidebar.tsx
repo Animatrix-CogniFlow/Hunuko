@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
 import { NAV_ITEMS } from "../../config/navigation";
-import { Logo } from "../brand/Logo";
+import { BrandLogo } from "../brand/BrandLogo";
 import { cn } from "../../lib/utils";
 import { useAgentStore } from "../../stores/useAgentStore";
 
@@ -24,7 +24,7 @@ export function Sidebar({
       )}
     >
       <div className="flex h-16 items-center justify-between px-4">
-        {collapsed ? <Logo withText={false} /> : <Logo />}
+        {collapsed ? <BrandLogo withText={false} /> : <BrandLogo />}
         <button
           onClick={onToggle}
           aria-label="Toggle sidebar"

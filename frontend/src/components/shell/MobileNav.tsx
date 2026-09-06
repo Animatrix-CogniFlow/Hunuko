@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { NAV_ITEMS } from "../../config/navigation";
-import { Logo } from "../brand/Logo";
+import { BrandLogo } from "../brand/BrandLogo";
 import { cn } from "../../lib/utils";
 
 export function MobileNav({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -28,7 +28,7 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
             className="absolute left-0 top-0 h-full w-72 border-r border-silver-200 bg-silver-100 p-4 dark:border-abyss-700 dark:bg-abyss-900"
           >
             <div className="mb-6 flex items-center justify-between">
-              <Logo />
+              <BrandLogo />
               <button
                 onClick={onClose}
                 aria-label="Close menu"
