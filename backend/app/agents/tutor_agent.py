@@ -185,3 +185,91 @@ The student is currently looking at this active page content on their screen:
         for chunk in response_stream:
             if chunk.choices and chunk.choices[0].delta.content:
                 yield chunk.choices[0].delta.content
+
+
+async def chat_with_mascot(
+    user_message: str,
+    conversation_history: list,
+    scene_id: str,
+    active_entity_id: str | None = None,
+    scene_graph: dict | list | None = None,
+    preceding_narration: str | None = None,
+    persona: str = "university",
+    output_language_code: str = "en"
+) -> dict:
+    import json
+    
+    language_instruction = get_language_instruction(output_language_code)
+    persona_instruction = get_persona_instruction(persona)
+    
+    scene_context = ""
+    if scene_graph:
+        scene_context = f"\nActive Visual Scene Graph elements:\n{json.dumps(scene_graph, indent=2)}"
+        
+    highlight_context = ""
+    if active_entity_id:
+        highlight_context = f"\nCurrently highlighted/selected entity ID: {active_entity_id}"
+        
+    narration_context = ""
+    if preceding_narration:
+        narration_context = f"\nPreceding visual explanation narration context:\n{preceding_narration}"
+
+    system_prompt = f"""
+You are Hunuko, the interactive visual mascot for CogniFlow.
+The student is studying visual materials and has asked a question about what they see on screen.
+
+Active Scene ID: {scene_id}
+{scene_context}
+{highlight_context}
+{narration_context}
+
+{language_instruction}
+{persona_instruction}
+
+Your Role & Rules:
+1. Provide a helpful, extremely concise answer (< 3 sentences).
+2. Answer based strictly on the provided scene graph, highlighted entities, and narration context.
+3. Be interactive and match the persona.
+4. If appropriate, recommend a mascot physical gesture to direct the student's attention. Respond in the following JSON format:
+{{
+  "reply": "Your concise text response to the student.",
+  "action_trigger": "point_left" | "point_right" | "celebrate" | "idle",
+  "target_entity_id": "the entity ID from the scene graph to highlight, if any"
+}}
+Return ONLY valid JSON. Do not include markdown wraps or extra text.
+"""
+
+    messages = [{"role": "system", "content": system_prompt}]
+    messages.extend(conversation_history)
+    messages.append({"role": "user", "content": user_message})
+
+    try:
+        # Request JSON output using Groq API JSON mode
+        response = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=messages,
+            response_format={"type": "json_object"},
+            max_tokens=300,
+            temperature=0.7
+        )
+        raw_result = response.choices[0].message.content.strip()
+        return json.loads(raw_result)
+    except Exception as e:
+        print(f"Error calling primary Groq model: {e}. Trying fallback model...")
+        try:
+            response = groq_client.chat.completions.create(
+                model="llama3-8b-8192",
+                messages=messages,
+                response_format={"type": "json_object"},
+                max_tokens=300,
+                temperature=0.7
+            )
+            raw_result = response.choices[0].message.content.strip()
+            return json.loads(raw_result)
+        except Exception as err:
+            return {
+                "reply": f"Sorry, I had trouble parsing the visual scene: {str(err)}",
+                "action_trigger": "idle",
+                "target_entity_id": None
+            }
+

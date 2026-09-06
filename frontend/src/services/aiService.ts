@@ -155,6 +155,7 @@ export interface AnimationResponse {
   language_code: string;
   persona: string;
   scene_script: SceneScript;
+  attempt?: number;
 }
 
 export interface EvaluationResponse {
@@ -205,6 +206,35 @@ export const aiService = {
         language_code: options.languageCode ?? "en",
         persona: options.persona ?? "university",
         page_content: options.pageContent ?? null,
+      }),
+    });
+  },
+
+  async mascotChat(
+    documentId: string,
+    message: string,
+    visualState: {
+      sceneId: string;
+      activeEntityId?: string | null;
+      sceneGraph: any;
+      precedingNarration?: string;
+      sessionId?: string | null;
+      persona?: string;
+      languageCode?: string;
+    }
+  ): Promise<{ reply: string; sessionId: string; action_trigger?: string; target_entity_id?: string }> {
+    return apiFetch<{ reply: string; sessionId: string; action_trigger?: string; target_entity_id?: string }>("/api/tutor/mascot-chat", {
+      method: "POST",
+      body: JSON.stringify({
+        document_id: documentId,
+        message,
+        scene_id: visualState.sceneId,
+        active_entity_id: visualState.activeEntityId ?? null,
+        scene_graph: visualState.sceneGraph,
+        preceding_narration: visualState.precedingNarration ?? "",
+        session_id: visualState.sessionId ?? null,
+        persona: visualState.persona ?? "university",
+        language_code: visualState.languageCode ?? "en",
       }),
     });
   },
