@@ -128,10 +128,10 @@ export default function Settings() {
   return (
     <PageContainer>
       <div className="mb-6">
-        <h1 className="font-display text-2xl font-semibold tracking-tight text-silver-900 dark:text-cobalt-100">
+        <h1 className="font-display text-2xl font-semibold tracking-tight text-[#F8FAFA]">
           Settings
         </h1>
-        <p className="mt-1 text-sm text-silver-600 dark:text-cobalt-400">
+        <p className="mt-1 text-sm text-[#B2C9C5]">
           Personalise your Hunuko environment.
         </p>
       </div>
@@ -139,15 +139,15 @@ export default function Settings() {
       <div className="grid gap-6 lg:grid-cols-2">
 
         {/* ── Appearance ──────────────────────────────────── */}
-        <Card>
+        <Card className="bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Monitor className="h-5 w-5 text-gold-600 dark:text-cobalt-400" /> Appearance
+            <CardTitle className="flex items-center gap-2 text-base text-[#F8FAFA]">
+              <Monitor className="h-5 w-5 text-[#D4AF37]" /> Appearance
             </CardTitle>
           </CardHeader>
           <CardBody className="space-y-4 pt-0">
             <div>
-              <p className="mb-2 text-sm font-medium text-silver-800 dark:text-cobalt-200">Theme</p>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#96C4BB]">Theme</p>
               <div className="grid grid-cols-2 gap-2">
                 {THEME_OPTIONS.map((o) => (
                   <button
@@ -156,11 +156,11 @@ export default function Settings() {
                     className={cn(
                       "flex items-center justify-center gap-2 rounded-xl border px-3 py-3 text-sm font-medium transition",
                       theme === o.value
-                        ? "border-gold-400 bg-gold-50 text-gold-700 dark:border-cobalt-500 dark:bg-cobalt-500/10 dark:text-cobalt-200"
-                        : "border-silver-300 text-silver-600 hover:border-silver-400 dark:border-abyss-600 dark:text-cobalt-400 dark:hover:border-abyss-500"
+                        ? "border-[#D4AF37] bg-[#D4AF37]/15 text-[#D4AF37] font-bold shadow-[0_0_10px_rgba(212,175,55,0.2)]"
+                        : "border-[#96C4BB]/20 bg-[#111A18] text-[#B2C9C5] hover:border-[#D4AF37] hover:text-[#F8FAFA]"
                     )}
                   >
-                    <o.icon className="h-4 w-4" /> {o.label}
+                    <o.icon className="h-4 w-4 text-[#D4AF37]" /> {o.label}
                   </button>
                 ))}
               </div>
@@ -169,14 +169,14 @@ export default function Settings() {
         </Card>
 
         {/* ── Motion ──────────────────────────────────────── */}
-        <Card>
+        <Card className="bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Zap className="h-5 w-5 text-gold-600 dark:text-cobalt-400" /> Motion
+            <CardTitle className="flex items-center gap-2 text-base text-[#F8FAFA]">
+              <Zap className="h-5 w-5 text-[#D4AF37]" /> Motion
             </CardTitle>
           </CardHeader>
           <CardBody className="space-y-4 pt-0">
-            <p className="text-sm text-silver-600 dark:text-cobalt-400">
+            <p className="text-sm text-[#B2C9C5]">
               Control the intensity of cinematic animation.
             </p>
             <div className="grid grid-cols-3 gap-2">
@@ -187,8 +187,8 @@ export default function Settings() {
                   className={cn(
                     "rounded-xl border px-3 py-3 text-sm font-medium transition",
                     motion === o.value
-                      ? "border-gold-400 bg-gold-50 text-gold-700 dark:border-cobalt-500 dark:bg-cobalt-500/10 dark:text-cobalt-200"
-                      : "border-silver-300 text-silver-600 hover:border-silver-400 dark:border-abyss-600 dark:text-cobalt-400"
+                      ? "border-[#D4AF37] bg-[#D4AF37]/15 text-[#D4AF37] font-bold shadow-[0_0_10px_rgba(212,175,55,0.2)]"
+                      : "border-[#96C4BB]/20 bg-[#111A18] text-[#B2C9C5] hover:border-[#D4AF37] hover:text-[#F8FAFA]"
                   )}
                 >
                   {o.label}
@@ -199,21 +199,21 @@ export default function Settings() {
         </Card>
 
         {/* ── Visual quality ──────────────────────────────── */}
-        <Card>
+        <Card className="bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center justify-between text-base">
+            <CardTitle className="flex items-center justify-between text-base text-[#F8FAFA]">
               <span className="flex items-center gap-2">
-                <Gauge className="h-5 w-5 text-gold-600 dark:text-cobalt-400" /> Visual quality
+                <Gauge className="h-5 w-5 text-[#D4AF37]" /> Visual quality
               </span>
-              <Badge tone="gold" className="capitalize">{profile.tier}</Badge>
+              <Badge tone="gold" className="capitalize bg-[#D4AF37]/20 text-[#D4AF37] border-[#D4AF37]/30">{profile.tier}</Badge>
             </CardTitle>
           </CardHeader>
           <CardBody className="space-y-4 pt-0">
-            <p className="text-sm text-silver-600 dark:text-cobalt-400">
+            <p className="text-sm text-[#B2C9C5]">
               Balance cinematic richness with speed.{" "}
-              <strong className="text-silver-800 dark:text-cobalt-200">Auto</strong> detects your
+              <strong className="text-[#F8FAFA]">Auto</strong> detects your
               device — currently rendering in{" "}
-              <span className="font-medium text-gold-600 dark:text-cobalt-300">{profile.tier}</span> mode.
+              <span className="font-semibold text-[#D4AF37]">{profile.tier}</span> mode.
             </p>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
               {QUALITY_OPTIONS.map((o) => (
@@ -223,8 +223,8 @@ export default function Settings() {
                   className={cn(
                     "rounded-xl border px-3 py-3 text-center transition",
                     quality === o.value
-                      ? "border-gold-400 bg-gold-50 text-gold-700 dark:border-cobalt-500 dark:bg-cobalt-500/10 dark:text-cobalt-200"
-                      : "border-silver-300 text-silver-600 hover:border-silver-400 dark:border-abyss-600 dark:text-cobalt-400"
+                      ? "border-[#D4AF37] bg-[#D4AF37]/15 text-[#D4AF37] font-bold shadow-[0_0_10px_rgba(212,175,55,0.2)]"
+                      : "border-[#96C4BB]/20 bg-[#111A18] text-[#B2C9C5] hover:border-[#D4AF37] hover:text-[#F8FAFA]"
                   )}
                 >
                   <span className="block text-sm font-medium">{o.label}</span>
@@ -403,10 +403,11 @@ export default function Settings() {
                 <Button
                   variant="outline"
                   onClick={() => setForm({ name: user?.name, email: user?.email })}
+                  className="border-[#96C4BB]/20 bg-[#111A18] text-[#B2C9C5] hover:text-[#F8FAFA]"
                 >
                   Cancel
                 </Button>
-                <Button onClick={handleSave} loading={saving}>
+                <Button onClick={handleSave} loading={saving} className="bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold border-none hover:brightness-110 shadow-lg shadow-[#D4AF37]/25">
                   <Save className="h-4 w-4" /> Save changes
                 </Button>
               </div>

@@ -106,10 +106,10 @@ export default function Profile() {
   return (
     <PageContainer>
       <div className="mb-6">
-        <h1 className="font-display text-2xl font-semibold tracking-tight">
+        <h1 className="font-display text-2xl font-semibold tracking-tight text-[#F8FAFA]">
           Your profile
         </h1>
-        <p className="mt-1 text-sm text-silver-600 dark:text-cobalt-400/70">
+        <p className="mt-1 text-sm text-[#B2C9C5]">
           Manage your account details and preferences.
         </p>
       </div>
@@ -118,20 +118,20 @@ export default function Profile() {
 
         {/* ── Email verification banner ── */}
         {!emailVerified && (
-          <div className="flex items-start gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm dark:border-amber-700/40 dark:bg-amber-900/20">
-            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+          <div className="flex items-start gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm backdrop-blur-md">
+            <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
             <div>
-              <p className="font-medium text-amber-800 dark:text-amber-200">
+              <p className="font-medium text-amber-200">
                 Email not verified
               </p>
-              <p className="mt-0.5 text-xs text-amber-700 dark:text-amber-300/70">
+              <p className="mt-0.5 text-xs text-amber-300/80">
                 Verify your email to unlock all features.{" "}
                 {resentVerification ? (
-                  <span className="font-medium text-emerald-600">Link resent!</span>
+                  <span className="font-medium text-emerald-400">Link resent!</span>
                 ) : (
                   <button
                     onClick={handleResendVerification}
-                    className="font-medium text-amber-700 underline dark:text-amber-300"
+                    className="font-medium text-amber-300 underline"
                   >
                     Resend verification email
                   </button>
@@ -142,18 +142,18 @@ export default function Profile() {
         )}
 
         {/* ── Profile card ── */}
-        <Card>
+        <Card className="bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
           <CardBody>
             <div className="mb-5 flex items-center gap-3">
               <div
-                className="flex h-12 w-12 items-center justify-center rounded-xl text-lg font-bold text-white"
+                className="flex h-12 w-12 items-center justify-center rounded-xl text-lg font-bold text-white shadow-md ring-1 ring-[#96C4BB]/30"
                 style={{ backgroundColor: avatarColor }}
               >
                 {name.trim().charAt(0).toUpperCase() || "?"}
               </div>
               <div>
-                <p className="font-display font-semibold tracking-tight">{user.name}</p>
-                <p className="text-xs text-silver-500 dark:text-cobalt-400/60">{user.email}</p>
+                <p className="font-display font-semibold tracking-tight text-[#F8FAFA]">{user.name}</p>
+                <p className="text-xs text-[#96C4BB]">{user.email}</p>
               </div>
             </div>
 
@@ -162,15 +162,15 @@ export default function Profile() {
                 label="Full name"
                 name="name"
                 value={name}
-                icon={<UserIcon className="h-4 w-4" />}
+                icon={<UserIcon className="h-4 w-4 text-[#96C4BB]" />}
                 onChange={(e) => setName(e.target.value)}
                 error={name.trim().length < 2 && name.length > 0 ? "Name too short" : undefined}
               />
 
               <div>
-                <p className="mb-2 text-sm font-medium text-silver-700 dark:text-cobalt-300">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#96C4BB]">
                   <span className="flex items-center gap-1.5">
-                    <Palette className="h-4 w-4" /> Avatar colour
+                    <Palette className="h-4 w-4 text-[#D4AF37]" /> Avatar colour
                   </span>
                 </p>
                 <div className="flex gap-2.5">
@@ -182,7 +182,7 @@ export default function Profile() {
                       onClick={() => setAvatarColor(c.hex)}
                       className={cn(
                         "h-8 w-8 rounded-full transition-transform",
-                        avatarColor === c.hex && "ring-2 ring-offset-2 ring-offset-white scale-110 dark:ring-offset-abyss-800"
+                        avatarColor === c.hex && "ring-2 ring-offset-2 ring-offset-[#070B0A] scale-110"
                       )}
                       style={{ backgroundColor: c.hex, outline: avatarColor === c.hex ? `2px solid ${c.hex}` : "none" }}
                     />
@@ -190,31 +190,31 @@ export default function Profile() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 rounded-xl border border-silver-200 bg-silver-50 px-4 py-3 dark:border-white/10 dark:bg-white/[0.02]">
-                <Mail className="h-4 w-4 shrink-0 text-silver-400" />
+              <div className="flex items-center gap-2 rounded-xl border border-[#96C4BB]/20 bg-[#111A18] px-4 py-3">
+                <Mail className="h-4 w-4 shrink-0 text-[#96C4BB]" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs font-medium text-silver-600 dark:text-cobalt-400/60">Email</p>
-                  <p className="truncate text-sm">{user.email}</p>
+                  <p className="text-xs font-medium text-[#96C4BB]">Email</p>
+                  <p className="truncate text-sm text-[#F8FAFA]">{user.email}</p>
                 </div>
                 {emailVerified && (
-                  <span className="flex items-center gap-1 text-xs font-medium text-emerald-600">
+                  <span className="flex items-center gap-1 text-xs font-semibold text-[#96C4BB]">
                     <CheckCircle2 className="h-3.5 w-3.5" /> Verified
                   </span>
                 )}
               </div>
 
-              <div className="flex items-center gap-2 rounded-xl border border-silver-200 bg-silver-50 px-4 py-3 dark:border-white/10 dark:bg-white/[0.02]">
-                <Shield className="h-4 w-4 shrink-0 text-silver-400" />
+              <div className="flex items-center gap-2 rounded-xl border border-[#96C4BB]/20 bg-[#111A18] px-4 py-3">
+                <Shield className="h-4 w-4 shrink-0 text-[#D4AF37]" />
                 <div>
-                  <p className="text-xs font-medium text-silver-600 dark:text-cobalt-400/60">Plan</p>
-                  <p className="text-sm capitalize">{user.plan ?? "Free"}</p>
+                  <p className="text-xs font-medium text-[#96C4BB]">Plan</p>
+                  <p className="text-sm capitalize text-[#F8FAFA] font-medium">{user.plan ?? "Free"}</p>
                 </div>
               </div>
 
-              {profileError && <p className="text-sm text-rose-500">{profileError}</p>}
+              {profileError && <p className="text-sm text-rose-400 font-medium">{profileError}</p>}
 
               <div className="flex items-center gap-3">
-                <Button type="submit" loading={saving} disabled={name.trim().length < 2}>
+                <Button type="submit" loading={saving} disabled={name.trim().length < 2} className="bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold border-none hover:brightness-110 shadow-lg shadow-[#D4AF37]/25">
                   Save changes
                 </Button>
                 <AnimatePresence>
@@ -223,7 +223,7 @@ export default function Profile() {
                       initial={{ opacity: 0, x: -4 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0 }}
-                      className="flex items-center gap-1.5 text-sm text-emerald-600"
+                      className="flex items-center gap-1.5 text-sm text-[#96C4BB] font-medium"
                     >
                       <CheckCircle2 className="h-4 w-4" /> Saved
                     </motion.span>

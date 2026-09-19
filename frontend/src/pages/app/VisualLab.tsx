@@ -329,8 +329,8 @@ export default function VisualLab() {
     <PageContainer wide>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-semibold tracking-tight">Visual Learning Lab</h1>
-          <p className="mt-1 text-sm text-silver-600 dark:text-silver-400">
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-[#F8FAFA]">Visual Learning Lab</h1>
+          <p className="mt-1 text-sm text-[#B2C9C5]">
             Interactive STEM visualizations dynamically rendered on canvas.
           </p>
         </div>
@@ -341,19 +341,19 @@ export default function VisualLab() {
             onClick={() => setDocDropOpen((o) => !o)}
             disabled={docsLoading}
             className={cn(
-              "flex h-11 min-w-[200px] items-center gap-2.5 rounded-xl border px-3.5 text-sm transition-colors bg-white",
-              "border-silver-300 text-silver-900 hover:border-gold-400 dark:border-white/10 dark:bg-abyss-800 dark:text-white dark:hover:border-gold-500/50"
+              "flex h-11 min-w-[200px] items-center gap-2.5 rounded-xl border px-3.5 text-sm transition-all backdrop-blur-xl shadow-md",
+              "border-[#96C4BB]/25 bg-[#0E1715]/85 text-[#F8FAFA] hover:border-[#D4AF37] hover:bg-[#111A18]/90"
             )}
           >
             {docsLoading ? (
-              <Loader2 className="h-4 w-4 animate-spin text-silver-400" />
+              <Loader2 className="h-4 w-4 animate-spin text-[#96C4BB]" />
             ) : (
-              <FileText className="h-4 w-4 shrink-0 text-gold-500" />
+              <FileText className="h-4 w-4 shrink-0 text-[#D4AF37]" />
             )}
             <span className="flex-1 truncate text-left">
               {docsLoading ? "Loading..." : selectedDoc?.title ?? "Choose a document"}
             </span>
-            <ChevronDown className="h-4 w-4 shrink-0 text-silver-400" />
+            <ChevronDown className="h-4 w-4 shrink-0 text-[#96C4BB]" />
           </button>
 
           <AnimatePresence>
@@ -362,7 +362,7 @@ export default function VisualLab() {
                 initial={{ opacity: 0, y: -6, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                className="absolute right-0 top-[calc(100%+6px)] z-50 max-h-52 w-64 overflow-y-auto rounded-xl border border-silver-200 bg-white p-1.5 shadow-lg dark:border-white/10 dark:bg-abyss-800"
+                className="absolute right-0 top-[calc(100%+6px)] z-50 max-h-52 w-64 overflow-y-auto rounded-xl border border-[#96C4BB]/25 bg-[#0E1715]/95 p-1.5 shadow-2xl backdrop-blur-2xl scrollbar-thin"
               >
                 {documents.map((doc) => (
                   <button
@@ -374,14 +374,14 @@ export default function VisualLab() {
                     className={cn(
                       "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
                       doc.id === selectedDocId
-                        ? "bg-gold-500/10 text-gold-700 dark:bg-gold-500/20 dark:text-white"
-                        : "hover:bg-silver-100 dark:hover:bg-white/5 dark:text-silver-300"
+                        ? "bg-[#507C7C]/30 text-[#F8FAFA] font-medium border border-[#96C4BB]/30"
+                        : "text-[#B2C9C5] hover:bg-[#111A18]/80 hover:text-[#F8FAFA]"
                     )}
                   >
-                    <FileText className="h-4 w-4 shrink-0 text-silver-400" />
+                    <FileText className="h-4 w-4 shrink-0 text-[#D4AF37]" />
                     <div className="min-w-0">
                       <p className="truncate font-medium">{doc.title}</p>
-                      <p className="truncate text-[11px] text-silver-500">{doc.subject}</p>
+                      <p className="truncate text-[11px] text-[#96C4BB]">{doc.subject}</p>
                     </div>
                   </button>
                 ))}
@@ -392,26 +392,26 @@ export default function VisualLab() {
       </div>
 
       {error && (
-        <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-800/50 dark:bg-rose-900/20 dark:text-rose-300">
+        <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-300 backdrop-blur-md">
           <AlertCircle className="h-4 w-4 shrink-0" />
           {error}
         </div>
       )}
 
       {!selectedDocId ? (
-        <Card className="flex flex-col items-center justify-center py-20 text-center">
+        <Card className="flex flex-col items-center justify-center py-20 text-center bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
           <CardBody className="max-w-md flex flex-col items-center">
-            <div className="h-16 w-16 rounded-full bg-gold-500/10 flex items-center justify-center mb-6">
-              <Atom className="h-8 w-8 text-gold-500 animate-pulse" />
+            <div className="h-16 w-16 rounded-full bg-[#D4AF37]/15 flex items-center justify-center mb-6 ring-1 ring-[#D4AF37]/30 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+              <Atom className="h-8 w-8 text-[#D4AF37] animate-pulse" />
             </div>
-            <h3 className="font-display text-xl font-semibold mb-2">No study materials loaded</h3>
-            <p className="text-silver-600 dark:text-silver-400 mb-6 text-sm">
+            <h3 className="font-display text-xl font-semibold mb-2 text-[#F8FAFA]">No study materials loaded</h3>
+            <p className="text-[#B2C9C5] mb-6 text-sm">
               Please choose a document or upload notes to start creating visual diagrams and learning key concepts.
             </p>
             {documents.length > 0 ? (
-              <Button onClick={() => setDocDropOpen(true)}>Choose from Decks</Button>
+              <Button onClick={() => setDocDropOpen(true)} className="bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold border-none hover:brightness-110 shadow-lg shadow-[#D4AF37]/20">Choose from Decks</Button>
             ) : (
-              <Button onClick={() => navigate("/app/upload")}>Upload a File</Button>
+              <Button onClick={() => navigate("/app/upload")} className="bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold border-none hover:brightness-110 shadow-lg shadow-[#D4AF37]/20">Upload a File</Button>
             )}
           </CardBody>
         </Card>
@@ -420,38 +420,38 @@ export default function VisualLab() {
 
           {/* Concepts Directory Sidebar */}
           <div className="lg:col-span-1 space-y-4">
-            <Card>
+            <Card className="bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
               <CardBody className="p-4 space-y-3">
-                <div className="flex items-center justify-between border-b border-silver-200 dark:border-white/10 pb-3">
-                  <h3 className="font-semibold text-sm tracking-wider uppercase text-silver-500">Quick Actions</h3>
+                <div className="flex items-center justify-between border-b border-[#96C4BB]/15 pb-3">
+                  <h3 className="font-semibold text-xs tracking-wider uppercase text-[#96C4BB]">Quick Actions</h3>
                 </div>
 
                 <Button
                   onClick={playIntroOverview}
                   variant="outline"
-                  className="w-full flex items-center justify-start border-gold-500/30 text-gold-600 hover:bg-gold-500/5"
+                  className="w-full flex items-center justify-start border-[#D4AF37]/40 text-[#D4AF37] bg-[#D4AF37]/5 hover:bg-[#D4AF37]/15 hover:border-[#D4AF37]"
                   disabled={generating}
                 >
                   {generating && !selectedConcept ? (
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin text-[#D4AF37]" />
                   ) : (
-                    <Sparkles className="h-4 w-4 mr-2 text-gold-500" />
+                    <Sparkles className="h-4 w-4 mr-2 text-[#D4AF37]" />
                   )}
                   Show Topic Summary
                 </Button>
               </CardBody>
             </Card>
 
-            <Card className="max-h-[500px] overflow-y-auto">
+            <Card className="max-h-[500px] overflow-y-auto bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl scrollbar-thin">
               <CardBody className="p-4">
-                <h3 className="font-semibold text-sm tracking-wider uppercase text-silver-500 border-b border-silver-200 dark:border-white/10 pb-3 mb-3">
+                <h3 className="font-semibold text-xs tracking-wider uppercase text-[#96C4BB] border-b border-[#96C4BB]/15 pb-3 mb-3">
                   Chapters & Topics ({topics.length})
                 </h3>
 
                 {topicsLoading ? (
                   <div className="py-10 text-center flex flex-col items-center gap-2">
-                    <Loader2 className="h-6 w-6 animate-spin text-gold-500" />
-                    <span className="text-xs text-silver-500">Loading outline...</span>
+                    <Loader2 className="h-6 w-6 animate-spin text-[#D4AF37]" />
+                    <span className="text-xs text-[#B2C9C5]">Loading outline...</span>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -463,27 +463,27 @@ export default function VisualLab() {
                       );
 
                       return (
-                        <div key={idx} className="border border-silver-100 dark:border-white/5 rounded-xl overflow-hidden bg-silver-50/50 dark:bg-white/[0.01]">
+                        <div key={idx} className="border border-[#96C4BB]/15 rounded-xl overflow-hidden bg-[#070B0A]/40 backdrop-blur-sm">
                           <button
                             onClick={() => handleSelectTopic(t.topic_name)}
                             className={cn(
                               "w-full text-left px-3 py-3 text-sm font-medium transition-all flex items-center justify-between gap-2.5",
-                              isExpanded ? "text-gold-500 bg-gold-500/5" : "text-silver-900 dark:text-silver-300 hover:bg-silver-100 dark:hover:bg-white/5"
+                              isExpanded ? "text-[#D4AF37] bg-[#D4AF37]/10" : "text-[#F8FAFA] hover:bg-[#111A18]/60"
                             )}
                           >
                             <div className="min-w-0">
-                              <p className="font-semibold truncate">{t.topic_name}</p>
-                              <p className="text-[10px] text-silver-500 truncate mt-0.5">{t.brief_description}</p>
+                              <p className="font-semibold truncate text-xs">{t.topic_name}</p>
+                              <p className="text-[10px] text-[#B2C9C5] truncate mt-0.5">{t.brief_description}</p>
                             </div>
-                            <ChevronDown className={cn("h-4 w-4 shrink-0 transition-transform text-silver-400", isExpanded && "rotate-180")} />
+                            <ChevronDown className={cn("h-4 w-4 shrink-0 transition-transform text-[#96C4BB]", isExpanded && "rotate-180")} />
                           </button>
 
                           {isExpanded && (
-                            <div className="p-2 border-t border-silver-100 dark:border-white/5 space-y-1 bg-white dark:bg-abyss-900/50">
+                            <div className="p-2 border-t border-[#96C4BB]/10 space-y-1 bg-[#0E1715]/60">
                               {isLoading ? (
                                 <div className="py-4 text-center flex flex-col items-center gap-1.5">
-                                  <Loader2 className="h-4 w-4 animate-spin text-gold-500" />
-                                  <span className="text-[10px] text-silver-500">Finding core topics...</span>
+                                  <Loader2 className="h-4 w-4 animate-spin text-[#D4AF37]" />
+                                  <span className="text-[10px] text-[#B2C9C5]">Finding core topics...</span>
                                 </div>
                               ) : topicConcepts.length > 0 ? (
                                 topicConcepts.map((c, i) => (
@@ -492,22 +492,22 @@ export default function VisualLab() {
                                     onClick={() => playConceptAnimation(c.concept)}
                                     disabled={generating}
                                     className={cn(
-                                      "w-full text-left px-2.5 py-2 rounded-lg text-xs transition-all flex items-start gap-2 border border-transparent",
+                                      "w-full text-left px-2.5 py-2 rounded-lg text-xs transition-all flex items-start gap-2 border",
                                       selectedConcept === c.concept
-                                        ? "bg-gold-500/10 border-gold-500/30 text-gold-700 dark:text-white font-medium"
-                                        : "hover:bg-silver-100 dark:hover:bg-white/5 text-silver-600 dark:text-silver-400"
+                                        ? "bg-[#507C7C]/30 border-[#96C4BB]/40 text-[#F8FAFA] font-medium shadow-sm"
+                                        : "border-transparent hover:bg-[#111A18]/80 text-[#B2C9C5] hover:text-[#F8FAFA]"
                                     )}
                                   >
-                                    <Play className="h-3 w-3 mt-0.5 shrink-0 text-silver-400" />
+                                    <Play className="h-3 w-3 mt-0.5 shrink-0 text-[#96C4BB]" />
                                     <div className="min-w-0 flex-1">
                                       <p className="font-medium truncate">{c.concept}</p>
                                       <span className={cn(
                                         "inline-block text-[9px] uppercase font-bold tracking-wider mt-0.5 px-1.5 py-0.2 rounded-full",
                                         c.complexity === "advanced"
-                                          ? "bg-rose-500/10 text-rose-500"
+                                          ? "bg-rose-500/20 text-rose-400 border border-rose-500/30"
                                           : c.complexity === "intermediate"
-                                            ? "bg-gold-500/10 text-gold-600"
-                                            : "bg-emerald-500/10 text-emerald-600"
+                                            ? "bg-[#D4AF37]/20 text-[#D4AF37] border border-[#D4AF37]/30"
+                                            : "bg-[#507C7C]/30 text-[#96C4BB] border border-[#96C4BB]/30"
                                       )}>
                                         {c.complexity}
                                       </span>
@@ -515,7 +515,7 @@ export default function VisualLab() {
                                   </button>
                                 ))
                               ) : (
-                                <p className="text-center text-[10px] text-silver-500 py-2">No key topics found for this chapter.</p>
+                                <p className="text-center text-[10px] text-[#B2C9C5] py-2">No key topics found for this chapter.</p>
                               )}
                             </div>
                           )}
@@ -531,28 +531,28 @@ export default function VisualLab() {
           {/* Interactive Rendering Canvas */}
           <div className="lg:col-span-3 space-y-4">
             {generating ? (
-              <div className="relative min-h-[550px] rounded-3xl border border-silver-300 bg-abyss-950 flex flex-col items-center justify-center p-8 shadow-2xl dark:border-abyss-700/60">
+              <div className="relative min-h-[550px] rounded-3xl border border-[#96C4BB]/25 bg-[#070B0A]/95 flex flex-col items-center justify-center p-8 shadow-2xl backdrop-blur-xl">
                 <AmbientBackground variant="hero" particles={true} />
-                <Loader2 className="h-10 w-10 animate-spin text-gold-500 mb-4" />
-                <p className="text-white text-lg font-medium">Creating your visual explanation...</p>
-                <p className="text-silver-500 text-xs mt-1">Designing the diagram layout and notes.</p>
+                <Loader2 className="h-10 w-10 animate-spin text-[#D4AF37] mb-4" />
+                <p className="text-[#F8FAFA] text-lg font-medium">Creating your visual explanation...</p>
+                <p className="text-[#B2C9C5] text-xs mt-1">Designing the diagram layout and notes.</p>
               </div>
             ) : isPlaying && animationScript ? (
               <div className="space-y-4">
 
                 {/* Canvas Container */}
-                <div className="relative overflow-hidden rounded-3xl border border-silver-300 bg-abyss-950 min-h-[500px] flex flex-col justify-between p-8 dark:border-abyss-700/60 shadow-2xl">
+                <div className="relative overflow-hidden rounded-3xl border border-[#96C4BB]/25 bg-[#070B0A]/95 min-h-[500px] flex flex-col justify-between p-8 shadow-2xl backdrop-blur-xl">
                   <AmbientBackground variant="hero" particles={false} />
-                  <div className="absolute inset-0 cf-grid-bg opacity-30" />
-                  <div className="absolute left-1/2 top-1/2 h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold-500/5 blur-[90px]" />
+                  <div className="absolute inset-0 cf-grid-bg opacity-25" />
+                  <div className="absolute left-1/2 top-1/2 h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#507C7C]/10 blur-[90px]" />
 
                   {/* Top Bar info inside Canvas */}
                   <div className="relative z-10 flex justify-between items-center text-white">
-                    <Badge tone={"flow" as any} className="border-gold-500/30">
+                    <Badge tone={"flow" as any} className="border-[#D4AF37]/40 bg-[#D4AF37]/15 text-[#D4AF37] shadow-sm">
                       <Atom className="h-4 w-4 mr-2" /> {selectedConcept || "Topic Summary"}
                     </Badge>
                     {regenAttempt > 1 && (
-                      <Badge tone={"danger" as any} className="text-rose-400 bg-rose-500/10 border-rose-500/20">
+                      <Badge tone={"danger" as any} className="text-rose-300 bg-rose-500/20 border-rose-500/30">
                         Revision {regenAttempt} (Easier Explanation)
                       </Badge>
                     )}
@@ -566,7 +566,7 @@ export default function VisualLab() {
                   </div>
 
                   {/* Navigation and Playback Controls */}
-                  <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-4 bg-black/20 backdrop-blur-md px-5 py-3 rounded-2xl">
+                  <div className="relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-[#96C4BB]/15 pt-4 bg-[#070B0A]/80 backdrop-blur-xl px-5 py-3 rounded-2xl">
                     <div className="flex gap-2">
                       {animationScript.scenes.map((s, i) => (
                         <button
@@ -574,7 +574,7 @@ export default function VisualLab() {
                           onClick={() => setSceneIndex(i)}
                           className={cn(
                             "h-2 rounded-full transition-all duration-300",
-                            i === sceneIndex ? "w-8 bg-gold-500 shadow-[0_0_8px_#eab308]" : "w-2 bg-white/20 hover:bg-white/40"
+                            i === sceneIndex ? "w-8 bg-[#D4AF37] shadow-[0_0_10px_#D4AF37]" : "w-2 bg-[#96C4BB]/30 hover:bg-[#96C4BB]/60"
                           )}
                           aria-label={`Go to scene ${i + 1}`}
                         />
@@ -588,24 +588,24 @@ export default function VisualLab() {
                         className={cn(
                           "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all border",
                           isPlaying 
-                            ? "bg-gold-500/10 border-gold-500/30 text-gold-400 hover:bg-gold-500/20" 
-                            : "bg-white/5 border-white/10 text-silver-300 hover:bg-white/10"
+                            ? "bg-[#D4AF37]/15 border-[#D4AF37]/40 text-[#D4AF37] hover:bg-[#D4AF37]/25" 
+                            : "bg-[#111A18] border-[#96C4BB]/20 text-[#B2C9C5] hover:text-[#F8FAFA] hover:bg-[#1A2825]"
                         )}
                       >
                         {isPlaying ? (
                           <>
-                            <Volume2 className="h-3.5 w-3.5 animate-pulse text-gold-400" />
+                            <Volume2 className="h-3.5 w-3.5 animate-pulse text-[#D4AF37]" />
                             <span>Mute Narrative</span>
                           </>
                         ) : (
                           <>
-                            <VolumeX className="h-3.5 w-3.5 text-silver-400" />
+                            <VolumeX className="h-3.5 w-3.5 text-[#B2C9C5]" />
                             <span>Speak Narrative</span>
                           </>
                         )}
                       </button>
 
-                      <span className="text-xs text-silver-400 font-medium">
+                      <span className="text-xs text-[#B2C9C5] font-medium">
                         Scene {sceneIndex + 1} of {animationScript.total_scenes}
                       </span>
 
@@ -615,7 +615,7 @@ export default function VisualLab() {
                           size="icon"
                           onClick={() => setSceneIndex(i => Math.max(0, i - 1))}
                           disabled={sceneIndex === 0}
-                          className="bg-white/10 border border-white/20 hover:bg-white/20 text-white dark:text-white h-8 w-8"
+                          className="bg-[#111A18] border border-[#96C4BB]/25 hover:border-[#D4AF37] text-[#F8FAFA] h-8 w-8"
                         >
                           <ChevronLeft className="h-4 w-4" />
                         </Button>
@@ -624,7 +624,7 @@ export default function VisualLab() {
                           size="icon"
                           onClick={() => setSceneIndex(i => Math.min(animationScript.scenes.length - 1, i + 1))}
                           disabled={sceneIndex === animationScript.scenes.length - 1}
-                          className="bg-white/10 border border-white/20 hover:bg-white/20 text-white dark:text-white h-8 w-8"
+                          className="bg-[#111A18] border border-[#96C4BB]/25 hover:border-[#D4AF37] text-[#F8FAFA] h-8 w-8"
                         >
                           <ChevronRight className="h-4 w-4" />
                         </Button>
@@ -638,21 +638,21 @@ export default function VisualLab() {
                   <motion.div
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="p-6 rounded-2xl border border-gold-500/20 bg-gold-500/5 backdrop-blur-md flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+                    className="p-6 rounded-2xl border border-[#D4AF37]/35 bg-[#0E1715]/90 backdrop-blur-xl flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-xl"
                   >
                     <div>
-                      <h4 className="font-semibold text-lg flex items-center gap-2">
-                        <HelpCircle className="h-5 w-5 text-gold-500" /> How did you do?
+                      <h4 className="font-semibold text-lg flex items-center gap-2 text-[#F8FAFA]">
+                        <HelpCircle className="h-5 w-5 text-[#D4AF37]" /> How did you do?
                       </h4>
-                      <p className="text-sm text-silver-600 dark:text-silver-400 mt-1">
+                      <p className="text-sm text-[#B2C9C5] mt-1">
                         Do you feel you understand this topic and the ideas shown in the diagram?
                       </p>
                     </div>
                     <div className="flex gap-3 shrink-0">
-                      <Button onClick={() => handleUnderstand(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white border-none px-6">
+                      <Button onClick={() => handleUnderstand(true)} className="bg-gradient-to-r from-[#507C7C] to-[#96C4BB] hover:brightness-110 text-[#070B0A] font-bold border-none px-6">
                         Yes, continue
                       </Button>
-                      <Button variant="secondary" onClick={() => handleUnderstand(false)} className="border border-silver-300 bg-silver-100 hover:bg-silver-200 text-silver-900 dark:border-white/10 dark:bg-white/5 dark:hover:bg-white/10 dark:text-white px-6">
+                      <Button variant="secondary" onClick={() => handleUnderstand(false)} className="border border-[#96C4BB]/30 bg-[#111A18] hover:border-[#D4AF37] text-[#F8FAFA] px-6">
                         No, simplify it
                       </Button>
                     </div>
@@ -660,19 +660,19 @@ export default function VisualLab() {
                 )}
               </div>
             ) : (
-              <div className="relative min-h-[550px] rounded-3xl border border-silver-300 bg-abyss-950 flex flex-col items-center justify-center p-8 text-center shadow-2xl dark:border-abyss-700/60">
+              <div className="relative min-h-[550px] rounded-3xl border border-[#96C4BB]/20 bg-[#070B0A]/95 flex flex-col items-center justify-center p-8 text-center shadow-2xl">
                 <AmbientBackground variant="hero" particles={true} />
                 <div className="absolute inset-0 cf-grid-bg opacity-20" />
                 <div className="relative z-10 max-w-md flex flex-col items-center">
-                  <div className="h-16 w-16 rounded-full bg-gold-500/15 flex items-center justify-center mb-6">
-                    <Play className="h-6 w-6 text-gold-400 ml-1 animate-bounce" />
+                  <div className="h-16 w-16 rounded-full bg-[#D4AF37]/15 flex items-center justify-center mb-6 ring-1 ring-[#D4AF37]/30 shadow-[0_0_20px_rgba(212,175,55,0.25)]">
+                    <Play className="h-6 w-6 text-[#D4AF37] ml-1 animate-bounce" />
                   </div>
-                  <h3 className="font-display text-2xl font-bold text-white mb-2">Visual Studio</h3>
-                  <p className="text-silver-400 text-sm mb-6">
+                  <h3 className="font-display text-2xl font-bold text-[#F8FAFA] mb-2">Visual Studio</h3>
+                  <p className="text-[#B2C9C5] text-sm mb-6">
                     Choose a topic from the sidebar on the left, or show the summary, to watch visual diagrams of your learning material.
                   </p>
                   {concepts.length > 0 && (
-                    <Button onClick={playIntroOverview} className="bg-gold-500 hover:bg-gold-400 text-abyss-900 border-none shadow-lg">
+                    <Button onClick={playIntroOverview} className="bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] hover:brightness-110 text-[#070B0A] font-bold border-none shadow-lg shadow-[#D4AF37]/25 px-6">
                       Show Summary
                     </Button>
                   )}
@@ -686,15 +686,15 @@ export default function VisualLab() {
       {/* Simplification & Feedback Modal */}
       <AnimatePresence>
         {showFeedbackModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#070B0A]/75 backdrop-blur-md p-4">
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="w-full max-w-md rounded-2xl border border-silver-300 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-abyss-800"
+              className="w-full max-w-md rounded-2xl border border-[#96C4BB]/30 bg-[#0E1715]/95 p-6 shadow-2xl backdrop-blur-2xl"
             >
-              <h3 className="font-display text-lg font-bold mb-2">What would you like to clarify?</h3>
-              <p className="text-sm text-silver-500 mb-4">
+              <h3 className="font-display text-lg font-bold mb-2 text-[#F8FAFA]">What would you like to clarify?</h3>
+              <p className="text-sm text-[#B2C9C5] mb-4">
                 Tell us what was confusing, and our AI will recreate the diagram with a simpler explanation.
               </p>
 
@@ -702,14 +702,14 @@ export default function VisualLab() {
                 value={feedbackText}
                 onChange={(e) => setFeedbackText(e.target.value)}
                 placeholder="e.g. The chloroplast diagram was too complex, show it step by step..."
-                className="w-full h-32 rounded-xl border border-silver-300 p-3 text-sm focus:border-gold-500 focus:outline-none dark:border-white/10 dark:bg-abyss-900 dark:text-white mb-4"
+                className="w-full h-32 rounded-xl border border-[#96C4BB]/25 bg-[#111A18] p-3 text-sm focus:border-[#D4AF37] focus:outline-none text-[#F8FAFA] placeholder:text-[#B2C9C5]/50 mb-4"
               />
 
               <div className="flex justify-end gap-3">
-                <Button variant="ghost" onClick={() => setShowFeedbackModal(false)} disabled={submittingFeedback}>
+                <Button variant="ghost" onClick={() => setShowFeedbackModal(false)} disabled={submittingFeedback} className="text-[#B2C9C5] hover:text-[#F8FAFA]">
                   Cancel
                 </Button>
-                <Button onClick={submitSimplification} loading={submittingFeedback} className="bg-gold-500 text-abyss-900 hover:bg-gold-400 border-none">
+                <Button onClick={submitSimplification} loading={submittingFeedback} className="bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold hover:brightness-110 border-none">
                   Try Again
                 </Button>
               </div>
@@ -728,17 +728,17 @@ export default function VisualLab() {
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 30, scale: 0.95 }}
-              className="w-80 h-96 rounded-2xl border border-silver-300 bg-white/95 dark:border-white/10 dark:bg-abyss-900/95 backdrop-blur-xl shadow-2xl p-4 flex flex-col justify-between pointer-events-auto"
+              className="w-84 h-96 rounded-2xl border border-[#96C4BB]/30 bg-[#0E1715]/95 backdrop-blur-2xl shadow-2xl p-4 flex flex-col justify-between pointer-events-auto"
             >
               {/* Header */}
-              <div className="flex justify-between items-center border-b border-silver-200 dark:border-white/5 pb-2 mb-2">
+              <div className="flex justify-between items-center border-b border-[#96C4BB]/15 pb-2 mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-                  <h4 className="font-semibold text-xs text-silver-800 dark:text-silver-200 uppercase tracking-wider">Ask Hunuko (Mascot)</h4>
+                  <span className="h-2 w-2 rounded-full bg-[#96C4BB] animate-ping" />
+                  <h4 className="font-semibold text-xs text-[#F8FAFA] uppercase tracking-wider">Ask Hunuko (Mascot)</h4>
                 </div>
                 <button
                   onClick={() => setChatOpen(false)}
-                  className="text-xs text-silver-400 hover:text-silver-600 dark:hover:text-silver-200"
+                  className="text-xs text-[#B2C9C5] hover:text-[#F8FAFA] transition-colors"
                 >
                   Hide
                 </button>
@@ -752,18 +752,18 @@ export default function VisualLab() {
                     className={cn(
                       "max-w-[85%] rounded-2xl px-3 py-2 text-xs leading-relaxed",
                       msg.role === "user"
-                        ? "ml-auto bg-gold-500 text-abyss-900 rounded-br-none font-medium"
-                        : "mr-auto bg-silver-100 text-silver-800 dark:bg-white/5 dark:text-silver-300 rounded-bl-none"
+                        ? "ml-auto bg-[#D4AF37] text-[#070B0A] font-medium rounded-br-none shadow-sm"
+                        : "mr-auto bg-[#111A18] text-[#F8FAFA] border border-[#96C4BB]/20 rounded-bl-none"
                     )}
                   >
                     <MarkdownLite text={msg.content} />
                   </div>
                 ))}
                 {mascotLoading && (
-                  <div className="mr-auto bg-silver-100 text-silver-800 dark:bg-white/5 dark:text-silver-300 rounded-2xl rounded-bl-none px-3 py-2 text-xs flex items-center gap-1.5 w-18">
-                    <span className="w-1.5 h-1.5 bg-silver-400 rounded-full animate-bounce" />
-                    <span className="w-1.5 h-1.5 bg-silver-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                    <span className="w-1.5 h-1.5 bg-silver-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+                  <div className="mr-auto bg-[#111A18] text-[#F8FAFA] border border-[#96C4BB]/20 rounded-2xl rounded-bl-none px-3 py-2 text-xs flex items-center gap-1.5 w-18">
+                    <span className="w-1.5 h-1.5 bg-[#96C4BB] rounded-full animate-bounce" />
+                    <span className="w-1.5 h-1.5 bg-[#96C4BB] rounded-full animate-bounce [animation-delay:0.2s]" />
+                    <span className="w-1.5 h-1.5 bg-[#96C4BB] rounded-full animate-bounce [animation-delay:0.4s]" />
                   </div>
                 )}
               </div>
@@ -777,13 +777,13 @@ export default function VisualLab() {
                   onKeyDown={(e) => e.key === "Enter" && handleSendMascotMessage()}
                   placeholder="Ask Hunuko about this diagram..."
                   disabled={mascotLoading}
-                  className="flex-1 min-w-0 bg-silver-50 dark:bg-abyss-950 border border-silver-300 dark:border-white/5 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold-500"
+                  className="flex-1 min-w-0 bg-[#111A18] border border-[#96C4BB]/25 text-[#F8FAFA] placeholder:text-[#B2C9C5]/50 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-[#D4AF37]"
                 />
                 <Button
                   size="icon"
                   onClick={handleSendMascotMessage}
                   disabled={mascotLoading || !chatInput.trim()}
-                  className="h-8 w-8 bg-gold-500 hover:bg-gold-400 text-abyss-900 border-none shrink-0"
+                  className="h-8 w-8 bg-[#D4AF37] hover:bg-[#EAB308] text-[#070B0A] border-none shrink-0"
                 >
                   <Send className="h-3.5 w-3.5" />
                 </Button>
@@ -801,8 +801,8 @@ export default function VisualLab() {
             className={cn(
               "flex h-20 w-20 items-center justify-center rounded-full shadow-2xl transition-all duration-300 relative border overflow-hidden",
               chatOpen 
-                ? "bg-abyss-900 border-gold-500/40" 
-                : "bg-gradient-to-tr from-abyss-950 to-abyss-900 border-white/10 hover:border-gold-500/30"
+                ? "bg-[#0E1715] border-[#D4AF37] shadow-[0_0_25px_rgba(212,175,55,0.4)]" 
+                : "bg-gradient-to-tr from-[#070B0A] to-[#111A18] border-[#96C4BB]/30 hover:border-[#D4AF37] hover:shadow-[0_0_20px_rgba(212,175,55,0.25)]"
             )}
           >
             <Mascot

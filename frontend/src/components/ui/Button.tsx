@@ -36,12 +36,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", loading, children, disabled, ...props }, ref) => (
     <motion.button
       ref={ref}
-      whileTap={{ scale: 0.97 }}
-      whileHover={{ scale: 1.015 }}
+      whileTap={{ scale: 0.98 }}
+      whileHover={{ y: -1.5, scale: 1.01 }}
       disabled={disabled || loading}
       className={cn(
-        "inline-flex items-center justify-center rounded-xl font-medium tracking-tight transition-colors",
-        "focus-visible:outline-gold-500 dark:focus-visible:outline-cobalt-400 disabled:opacity-50 disabled:pointer-events-none select-none",
+        "inline-flex items-center justify-center rounded-xl font-medium tracking-tight transition-all duration-200 cursor-pointer",
+        "focus-visible:outline-[#D4AF37] dark:focus-visible:outline-[#96C4BB] disabled:opacity-50 disabled:pointer-events-none select-none",
         variants[variant],
         sizes[size],
         className

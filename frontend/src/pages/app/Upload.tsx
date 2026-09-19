@@ -123,10 +123,10 @@ export default function Upload() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-6"
       >
-        <h1 className="font-display text-3xl font-semibold tracking-tight text-abyss-900 dark:text-white">
+        <h1 className="font-display text-3xl font-semibold tracking-tight text-[#F8FAFA]">
           Add Learning Material
         </h1>
-        <p className="mt-2 text-silver-600 dark:text-silver-400">
+        <p className="mt-2 text-[#B2C9C5]">
           Upload your notes, slides, or textbook chapters (PDF) to start learning. Hunuko will read the file, summarize the core topics, and create your personalized study space.
         </p>
       </motion.div>
@@ -146,32 +146,37 @@ export default function Upload() {
             onDragLeave={() => setDragging(false)}
             onDrop={processing ? undefined : onDrop}
             className={cn(
-              "relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-20 text-center transition-all duration-300",
-              dragging ? "border-gold-400 bg-gold-500/10 dark:bg-gold-500/20" : "border-silver-300 bg-white/50 dark:border-white/10 dark:bg-abyss-800/40",
+              "relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed px-6 py-20 text-center transition-all duration-300 cursor-pointer",
+              "border-[#96C4BB]/40 hover:border-[#D4AF37] hover:bg-[#111A18]/60 bg-[#0E1715]/40 backdrop-blur-xl shadow-xl",
+              dragging && "border-[#D4AF37] bg-[#D4AF37]/10 shadow-[0_0_30px_rgba(212,175,55,0.25)]",
               processing && "opacity-60 cursor-not-allowed",
-              selectedFile && !dragging && "border-emerald-400/50 bg-emerald-500/5 dark:bg-emerald-500/10"
+              selectedFile && !dragging && "border-[#96C4BB]/70 bg-[#507C7C]/15 shadow-[0_0_25px_rgba(150,196,187,0.2)]"
             )}
+            onClick={() => !processing && inputRef.current?.click()}
           >
             <motion.div
               animate={{ y: dragging ? -8 : 0 }}
               className={cn(
-                "mb-5 flex h-20 w-20 items-center justify-center rounded-2xl transition-colors",
-                selectedFile ? "bg-emerald-500/20 text-emerald-600" : "bg-gold-500/20 text-gold-600"
+                "mb-5 flex h-20 w-20 items-center justify-center rounded-2xl transition-colors shadow-inner",
+                selectedFile ? "bg-[#507C7C]/30 text-[#96C4BB] ring-1 ring-[#96C4BB]/40" : "bg-[#D4AF37]/20 text-[#D4AF37] ring-1 ring-[#D4AF37]/30"
               )}
             >
               {selectedFile ? <FileText className="h-10 w-10" /> : <UploadCloud className="h-10 w-10" />}
             </motion.div>
             
-            <h3 className="font-display text-xl font-semibold tracking-tight">
+            <h3 className="font-display text-xl font-semibold tracking-tight text-[#F8FAFA]">
               {selectedFile ? "File Ready" : "Drag & Drop your document here"}
             </h3>
-            <p className="mt-2 text-sm text-silver-600 dark:text-silver-400">
+            <p className="mt-2 text-sm text-[#B2C9C5]">
               Supports PDF (Max 50MB)
             </p>
             
             <Button 
-              className="mt-6 shadow-lg shadow-gold-500/20" 
-              onClick={() => inputRef.current?.click()}
+              className="mt-6 bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold shadow-lg shadow-[#D4AF37]/25 hover:brightness-110 border-none" 
+              onClick={(e) => {
+                e.stopPropagation();
+                inputRef.current?.click();
+              }}
               disabled={processing}
             >
               {selectedFile ? "Change File" : "Browse files"}
@@ -189,12 +194,12 @@ export default function Upload() {
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="absolute bottom-4 flex items-center gap-3 rounded-full border border-silver-300 bg-white px-5 py-2 shadow-sm dark:border-white/10 dark:bg-abyss-900"
+                className="absolute bottom-4 flex items-center gap-3 rounded-full border border-[#96C4BB]/30 bg-[#0E1715]/95 px-5 py-2 shadow-lg backdrop-blur-md"
               >
-                <span className="text-sm font-medium text-abyss-900 dark:text-white truncate max-w-[200px]">
+                <span className="text-sm font-medium text-[#F8FAFA] truncate max-w-[200px]">
                   {selectedFile.name}
                 </span>
-                <span className="text-xs text-silver-500 font-mono">
+                <span className="text-xs text-[#96C4BB] font-mono">
                   {formatBytes(selectedFile.size)}
                 </span>
               </motion.div>
@@ -220,20 +225,20 @@ export default function Upload() {
           </div>
 
           {error && (
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-red-500 font-medium">
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-red-400 font-medium">
               {error}
             </motion.p>
           )}
 
-          <div className="flex items-center justify-between border-t border-silver-200 pt-6 dark:border-white/10">
-            <Button variant="ghost" onClick={resetAll} disabled={processing || !selectedFile}>
+          <div className="flex items-center justify-between border-t border-[#96C4BB]/15 pt-6">
+            <Button variant="ghost" onClick={resetAll} disabled={processing || !selectedFile} className="text-[#B2C9C5] hover:text-[#F8FAFA]">
               Clear
             </Button>
             <Button 
               onClick={generate} 
               loading={processing} 
               disabled={!selectedFile || !title.trim()}
-              className="bg-abyss-900 text-white hover:bg-abyss-800 dark:bg-gold-500 dark:text-abyss-900 dark:hover:bg-gold-400"
+              className="bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold hover:brightness-110 shadow-lg shadow-[#D4AF37]/20 border-none px-6"
             >
               <Brain className="h-4 w-4 mr-2" /> 
               {processing ? stage || "Reading file..." : "Start Processing"}
@@ -244,14 +249,14 @@ export default function Upload() {
           <AnimatePresence>
             {result && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-                <SpotlightCard className="p-6 border-emerald-500/30 bg-emerald-500/5" tilt={false}>
+                <SpotlightCard className="p-6 border-[#96C4BB]/40 bg-[#0E1715]/90 backdrop-blur-xl shadow-2xl" tilt={false}>
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/20">
-                      <CheckCircle2 className="h-6 w-6 text-emerald-500" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#507C7C]/30 text-[#96C4BB] ring-1 ring-[#96C4BB]/30">
+                      <CheckCircle2 className="h-6 w-6 text-[#96C4BB]" />
                     </div>
                     <div>
-                      <h3 className="font-display text-lg font-semibold tracking-tight">Material Added!</h3>
-                      <p className="text-sm text-silver-600 dark:text-silver-400">
+                      <h3 className="font-display text-lg font-semibold tracking-tight text-[#F8FAFA]">Material Added!</h3>
+                      <p className="text-sm text-[#B2C9C5]">
                         {result.title} has been successfully loaded.
                       </p>
                     </div>
@@ -262,13 +267,13 @@ export default function Upload() {
                     <Stat icon={FileText} label="Language" valueText={result.language_code.toUpperCase()} />
                   </div>
                   
-                  <div className="mt-6 flex flex-wrap gap-3 border-t border-emerald-500/20 pt-6">
+                  <div className="mt-6 flex flex-wrap gap-3 border-t border-[#96C4BB]/20 pt-6">
                     <Button 
                       onClick={() => {
                         selectDocument(result.document_id);
                         navigate("/app/lab");
                       }} 
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white border-none"
+                      className="bg-gradient-to-r from-[#507C7C] to-[#96C4BB] hover:brightness-110 text-[#070B0A] font-bold border-none"
                     >
                       <Video className="h-4 w-4 mr-2" /> Enter Visual Lab
                     </Button>
@@ -278,6 +283,7 @@ export default function Upload() {
                         selectDocument(result.document_id);
                         navigate("/app/study");
                       }}
+                      className="bg-[#111A18] text-[#F8FAFA] border-[#96C4BB]/30 hover:border-[#D4AF37]"
                     >
                       <ArrowRight className="h-4 w-4 mr-2" /> Continue to Dashboard
                     </Button>
@@ -290,9 +296,9 @@ export default function Upload() {
 
         {/* PIPELINE SIDEBAR */}
         <div>
-          <Card className="sticky top-6">
+          <Card className="sticky top-6 bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
             <CardBody>
-              <h3 className="mb-5 font-display text-lg font-semibold tracking-tight">Progress Tracker</h3>
+              <h3 className="mb-5 font-display text-lg font-semibold tracking-tight text-[#F8FAFA]">Progress Tracker</h3>
               <div className="space-y-3">
                 {PIPELINE.map((p, i) => {
                   const activeIdx = PIPELINE.indexOf(stage);
@@ -314,16 +320,16 @@ export default function Upload() {
                       <span
                         className={cn(
                           "flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors duration-500",
-                          status === "done" ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/20"
-                            : status === "active" ? "bg-gold-500 text-abyss-900 shadow-lg shadow-gold-500/20"
-                            : "bg-silver-200 text-silver-500 dark:bg-white/5"
+                          status === "done" ? "bg-[#507C7C] text-white shadow-lg shadow-[#507C7C]/30 ring-1 ring-[#96C4BB]/40"
+                            : status === "active" ? "bg-[#D4AF37] text-[#070B0A] shadow-lg shadow-[#D4AF37]/30 ring-1 ring-[#D4AF37]"
+                            : "bg-[#111A18] text-[#B2C9C5] border border-[#96C4BB]/15"
                         )}
                       >
-                        {status === "done" ? <CheckCircle2 className="h-5 w-5" />
-                          : status === "active" ? <Loader2 className="h-4 w-4 animate-spin" />
+                        {status === "done" ? <CheckCircle2 className="h-5 w-5 text-white" />
+                          : status === "active" ? <Loader2 className="h-4 w-4 animate-spin text-[#070B0A]" />
                           : i + 1}
                       </span>
-                      <span className={cn("text-sm transition-all duration-300", status === "active" ? "font-semibold text-abyss-900 dark:text-white" : "font-medium text-silver-600")}>
+                      <span className={cn("text-sm transition-all duration-300", status === "active" ? "font-semibold text-[#F8FAFA]" : "font-medium text-[#B2C9C5]")}>
                         {p}
                       </span>
                     </motion.div>
@@ -332,9 +338,9 @@ export default function Upload() {
               </div>
 
               {processing && (
-                <div className="mt-6 h-2 overflow-hidden rounded-full bg-silver-200 dark:bg-white/10 shadow-inner">
+                <div className="mt-6 h-2 overflow-hidden rounded-full bg-[#111A18] border border-[#96C4BB]/20 shadow-inner">
                   <motion.div
-                    className="h-full rounded-full bg-gradient-to-r from-gold-400 to-gold-600"
+                    className="h-full rounded-full bg-gradient-to-r from-[#507C7C] via-[#96C4BB] to-[#D4AF37]"
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
                     transition={{ ease: "easeOut" }}
@@ -342,9 +348,9 @@ export default function Upload() {
                 </div>
               )}
 
-              <div className="mt-8 rounded-xl bg-silver-100 p-4 dark:bg-white/5 border border-silver-200 dark:border-white/10">
-                <Badge tone="flow" className="mb-3 border-gold-500/30">How it works</Badge>
-                <p className="text-xs leading-relaxed text-silver-600 dark:text-silver-400">
+              <div className="mt-8 rounded-xl bg-[#111A18]/70 p-4 border border-[#96C4BB]/20">
+                <Badge tone="flow" className="mb-3 border-[#D4AF37]/40 text-[#D4AF37] bg-[#D4AF37]/10">How it works</Badge>
+                <p className="text-xs leading-relaxed text-[#B2C9C5]">
                   Your study material is read and organized using advanced AI technology. Once processed, you'll be able to watch interactive animations, practice with a voice tutor, and test yourself with customized flashcards.
                 </p>
               </div>
@@ -358,15 +364,15 @@ export default function Upload() {
 
 function Stat({ icon: Icon, label, value, valueText }: { icon: typeof Brain; label: string; value?: number; valueText?: string; }) {
   return (
-    <div className="rounded-xl border border-silver-200 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-white/5 flex items-start gap-4">
-      <div className="rounded-lg bg-silver-100 p-2 dark:bg-white/10">
-        <Icon className="h-5 w-5 text-abyss-900 dark:text-gold-400" />
+    <div className="rounded-xl border border-[#96C4BB]/20 bg-[#111A18]/80 p-4 shadow-sm flex items-start gap-4 backdrop-blur-sm">
+      <div className="rounded-lg bg-[#507C7C]/20 p-2 text-[#96C4BB] ring-1 ring-[#96C4BB]/30">
+        <Icon className="h-5 w-5" />
       </div>
       <div>
-        <p className="font-display text-xl font-bold tracking-tight text-abyss-900 dark:text-white">
+        <p className="font-display text-xl font-bold tracking-tight text-[#F8FAFA]">
           {valueText ?? value}
         </p>
-        <p className="text-xs font-medium text-silver-500 uppercase tracking-wider mt-0.5">{label}</p>
+        <p className="text-xs font-medium text-[#B2C9C5] uppercase tracking-wider mt-0.5">{label}</p>
       </div>
     </div>
   );

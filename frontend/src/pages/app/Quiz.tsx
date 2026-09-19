@@ -139,47 +139,69 @@ export default function Quiz() {
         </div>
       ) : (
         <>
-          {/* Result banner */}
+          {/* Result banner with Celebratory Mascot State */}
           <AnimatePresence>
             {submitted && result && (
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6"
+                initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                className="mb-8"
               >
-                <Card>
-                  <CardBody className="flex flex-wrap items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div
-                        className={cn(
-                          "flex h-16 w-16 items-center justify-center rounded-2xl font-display text-xl font-semibold",
-                          result.score >= 70
-                            ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"
-                            : result.score >= 40
-                            ? "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400"
-                            : "bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400"
-                        )}
-                      >
-                        {result.score}%
+                <Card className="border border-[#96C4BB]/30 bg-gradient-to-r from-[#0E1715] via-[#131F1C] to-[#0E1715] p-6 backdrop-blur-2xl shadow-[0_0_35px_rgba(80,124,124,0.25)]">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div className="flex items-center gap-5">
+                      {/* Celebratory Mascot Avatar */}
+                      <div className="relative flex shrink-0 items-center justify-center">
+                        <div className="absolute h-24 w-24 rounded-full bg-[#D4AF37]/20 blur-xl animate-pulse" />
+                        <motion.img
+                          src="/assets/mascot.jpg"
+                          alt="Hunuko Mascot"
+                          animate={{ y: [0, -6, 0], rotate: [0, 2, -2, 0] }}
+                          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                          className="relative z-10 h-20 w-20 rounded-2xl object-contain border-2 border-[#D4AF37]/70 shadow-lg"
+                        />
+                        <span className="absolute -top-1 -right-1 text-xl animate-bounce">🏆</span>
                       </div>
+
                       <div>
-                        <h2 className="font-display text-lg font-semibold tracking-tight">
-                          {result.score >= 70 ? "Great work!" : result.score >= 40 ? "Keep going" : "Review and retry"}
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={cn(
+                              "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border",
+                              result.score >= 70
+                                ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-400"
+                                : result.score >= 40
+                                ? "bg-[#D4AF37]/15 border-[#D4AF37]/30 text-[#D4AF37]"
+                                : "bg-rose-500/15 border-rose-500/30 text-rose-400"
+                            )}
+                          >
+                            Score: {result.score}%
+                          </span>
+                          <span className="text-xs text-[#A3B8B5]">
+                            {result.correct} of {result.total} questions correct
+                          </span>
+                        </div>
+                        <h2 className="font-display text-2xl font-bold tracking-tight text-[#F8FAFA] mt-1">
+                          {result.score >= 70 ? "Mastery Demonstrated!" : result.score >= 40 ? "Solid Progress, Keep Going!" : "Review Concepts and Retry"}
                         </h2>
-                        <p className="text-sm text-silver-600 dark:text-silver-600">
-                          {result.correct} of {result.total} correct
+                        <p className="text-xs text-[#B2C9C5] mt-0.5">
+                          {result.score >= 70 ? "Your conceptual model is strong across these key topics." : "Targeted flashcard review will solidify these terms."}
                         </p>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="secondary" onClick={retry}>
-                        <RotateCcw className="h-4 w-4" /> Retry
+
+                    <div className="flex gap-2.5 shrink-0">
+                      <Button variant="secondary" onClick={retry} className="border-[#96C4BB]/30 text-[#F8FAFA] hover:bg-[#507C7C]/20 cursor-pointer">
+                        <RotateCcw className="h-4 w-4 mr-1" /> Retry
                       </Button>
-                      <Button onClick={() => navigate(`/app/study/${deck.document_id}/review`)}>
-                        <Trophy className="h-4 w-4" /> Review cards
+                      <Button
+                        onClick={() => navigate(`/app/study/${deck.document_id}/review`)}
+                        className="bg-[#D4AF37] text-[#070B0A] hover:bg-[#e0be4d] font-bold shadow-lg shadow-[#D4AF37]/20 border-none cursor-pointer"
+                      >
+                        <Trophy className="h-4 w-4 mr-1" /> Review cards
                       </Button>
                     </div>
-                  </CardBody>
+                  </div>
                 </Card>
               </motion.div>
             )}
@@ -190,15 +212,15 @@ export default function Quiz() {
             {questions.map((q, qi) => {
               const selected = answers[q.id];
               return (
-                <Card key={q.id}>
-                  <CardBody>
-                    <div className="font-display font-semibold tracking-tight flex items-start gap-1">
-                      <span className="text-gold-600">{qi + 1}.</span>
-                      <div className="flex-1 text-left">
+                <Card key={q.id} className="border-[#96C4BB]/20 bg-[#0E1715]/85 backdrop-blur-xl">
+                  <CardBody className="p-6">
+                    <div className="font-display font-semibold tracking-tight flex items-start gap-2 text-[#F8FAFA] text-base">
+                      <span className="text-[#D4AF37] font-mono">{qi + 1}.</span>
+                      <div className="flex-1 text-left leading-relaxed">
                         <MarkdownLite text={q.prompt} />
                       </div>
                     </div>
-                    <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
                       {q.options.map((opt, oi) => {
                         const isSelected = selected === oi;
                         const isCorrect = oi === q.answerIndex;
@@ -207,27 +229,28 @@ export default function Quiz() {
                           <motion.button
                             key={opt}
                             whileTap={submitted ? {} : { scale: 0.98 }}
+                            whileHover={submitted ? {} : { y: -1 }}
                             onClick={() => select(q.id, oi)}
                             disabled={submitted}
                             className={cn(
-                              "flex items-center justify-between gap-2 rounded-xl border px-4 py-3 text-left text-sm transition-colors",
+                              "flex items-center justify-between gap-3 rounded-2xl border px-4 py-3.5 text-left text-sm transition-all duration-200 cursor-pointer",
                               !showState &&
                                 (isSelected
-                                  ? "border-gold-400 bg-gold-500 dark:bg-gold-500/10 text-white dark:text-white"
-                                  : "border-silver-300 hover:border-gold-400 dark:border-white/[0.08] dark:hover:border-gold-400/30"),
+                                  ? "border-2 border-[#D4AF37] bg-[#D4AF37]/20 text-white shadow-[0_0_15px_rgba(212,175,55,0.3)] font-semibold"
+                                  : "border-[#96C4BB]/20 bg-[#111A18]/70 text-[#F8FAFA] hover:border-[#96C4BB]/60 hover:bg-[#507C7C]/15 hover:shadow-[0_0_15px_rgba(150,196,187,0.2)]"),
                               showState &&
                                 isCorrect &&
-                                "border-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+                                "border-2 border-[#96C4BB] bg-[#507C7C]/30 text-[#F8FAFA] shadow-[0_0_20px_rgba(150,196,187,0.4)] font-semibold",
                               showState &&
                                 isSelected &&
                                 !isCorrect &&
-                                "border-rose-400 bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400",
-                              showState && !isCorrect && !isSelected && "border-silver-300 opacity-60 dark:border-abyss-700/60"
+                                "border-2 border-rose-500/70 bg-rose-500/20 text-rose-200 shadow-[0_0_15px_rgba(244,63,94,0.3)]",
+                              showState && !isCorrect && !isSelected && "border-[#96C4BB]/10 bg-[#111A18]/40 opacity-50 text-[#A3B8B5]"
                             )}
                           >
-                            <span className="flex-1 text-left"><MarkdownLite text={opt} /></span>
-                            {showState && isCorrect && <Check className="h-4 w-4 shrink-0 text-emerald-500" />}
-                            {showState && isSelected && !isCorrect && <X className="h-4 w-4 shrink-0 text-rose-500" />}
+                            <span className="flex-1 text-left leading-snug"><MarkdownLite text={opt} /></span>
+                            {showState && isCorrect && <Check className="h-4 w-4 shrink-0 text-[#96C4BB]" />}
+                            {showState && isSelected && !isCorrect && <X className="h-4 w-4 shrink-0 text-rose-400" />}
                           </motion.button>
                         );
                       })}
@@ -237,8 +260,9 @@ export default function Quiz() {
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
-                        className="mt-3 rounded-lg bg-silver-200 px-3 py-2 text-sm text-silver-600 dark:bg-white/[0.03] dark:text-silver-300 text-left"
+                        className="mt-4 rounded-xl bg-[#111A18] border border-[#96C4BB]/20 px-4 py-3 text-xs text-[#B2C9C5] text-left leading-relaxed"
                       >
+                        <span className="font-bold text-[#D4AF37] block mb-1">Explanation:</span>
                         <MarkdownLite text={q.explanation} />
                       </motion.div>
                     )}
@@ -249,9 +273,15 @@ export default function Quiz() {
           </div>
 
           {!submitted && (
-            <div className="sticky bottom-4 mt-6 flex justify-center">
-              <Button size="lg" onClick={submit} loading={submitting} disabled={!allAnswered} className="shadow-xl">
-                {allAnswered ? "Submit quiz" : `Answer all ${questions.length} questions`}
+            <div className="sticky bottom-4 mt-8 flex justify-center z-20">
+              <Button
+                size="lg"
+                onClick={submit}
+                loading={submitting}
+                disabled={!allAnswered}
+                className="bg-[#D4AF37] text-[#070B0A] hover:bg-[#e0be4d] font-bold shadow-[0_0_25px_rgba(212,175,55,0.35)] px-8 py-3 rounded-2xl border-none cursor-pointer"
+              >
+                {allAnswered ? "Submit quiz for grading" : `Answer all ${questions.length} questions`}
               </Button>
             </div>
           )}

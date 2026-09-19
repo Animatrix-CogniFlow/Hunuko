@@ -63,14 +63,14 @@ export default function Agents() {
     <PageContainer wide>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="font-display text-2xl font-semibold tracking-tight">
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-[#F8FAFA]">
             Study Assistants Hub
           </h1>
-          <p className="mt-1 text-silver-600 dark:text-silver-600">
+          <p className="mt-1 text-sm text-[#B2C9C5]">
             Meet the AI helpers that prepare your flashcards, generate quizzes, and coordinate your learning path.
           </p>
         </div>
-        <Button onClick={runOrchestration} loading={orchestrating}>
+        <Button onClick={runOrchestration} loading={orchestrating} className="bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold hover:brightness-110 shadow-lg shadow-[#D4AF37]/25 border-none">
           <Play className="h-4 w-4" /> {orchestrating ? "Processing…" : "Update materials"}
         </Button>
       </div>
@@ -78,9 +78,9 @@ export default function Agents() {
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Graph */}
         <div className="lg:col-span-2">
-          <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-silver-300 bg-silver-900 dark:bg-abyss-900 dark:border-abyss-700/60 sm:aspect-[4/3]">
+          <div className="relative aspect-square w-full overflow-hidden rounded-3xl border border-[#96C4BB]/25 bg-[#070B0A]/95 shadow-2xl backdrop-blur-xl sm:aspect-[4/3]">
             <AmbientBackground variant="hero" particles={false} />
-            <div className="absolute inset-0 cf-grid-bg opacity-25" />
+            <div className="absolute inset-0 cf-grid-bg opacity-20" />
             <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full" preserveAspectRatio="xMidYMid meet">
               {EDGES.map(([from, to], i) => {
                 const a = POSITIONS[from];
@@ -96,13 +96,13 @@ export default function Agents() {
                       y1={a.y}
                       x2={b.x}
                       y2={b.y}
-                      stroke={live ? "#588dff" : "rgba(120,140,200,0.18)"}
-                      strokeWidth={live ? 0.7 : 0.4}
+                      stroke={live ? "#D4AF37" : "rgba(150,196,187,0.18)"}
+                      strokeWidth={live ? 0.8 : 0.4}
                     />
                     {live && (
                       <motion.circle
-                        r={1.1}
-                        fill="#8db5ff"
+                        r={1.2}
+                        fill="#D4AF37"
                         initial={{ cx: a.x, cy: a.y }}
                         animate={{ cx: b.x, cy: b.y }}
                         transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
@@ -135,25 +135,25 @@ export default function Agents() {
                   <div className="flex flex-col items-center gap-1.5">
                     <div
                       className={cn(
-                        "relative flex h-11 w-11 items-center justify-center rounded-xl border transition-colors sm:h-14 sm:w-14",
-                        selected === agent.id && "ring-2 ring-white ring-offset-2 ring-offset-abyss-950",
+                        "relative flex h-11 w-11 items-center justify-center rounded-xl border transition-all sm:h-14 sm:w-14 backdrop-blur-md shadow-lg",
+                        selected === agent.id && "ring-2 ring-[#D4AF37] ring-offset-2 ring-offset-[#070B0A]",
                         agent.status === "active"
-                          ? "border-gold-400 bg-gold-500 text-white shadow-[0_0_24px] shadow-gold-500/60 dark:shadow-cobalt-500/60"
+                          ? "border-[#D4AF37] bg-gradient-to-tr from-[#D4AF37] to-[#F59E0B] text-[#070B0A] shadow-[0_0_24px_rgba(212,175,55,0.6)] font-bold"
                           : agent.status === "complete"
-                          ? "border-emerald-400/50 bg-emerald-500/15 text-emerald-300"
-                          : "border-white/10 bg-white/5 text-silver-600"
+                          ? "border-[#96C4BB]/50 bg-[#507C7C]/30 text-[#96C4BB]"
+                          : "border-[#96C4BB]/20 bg-[#111A18]/80 text-[#B2C9C5] hover:border-[#D4AF37]/50"
                       )}
                     >
                       <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
                       {agent.status === "active" && (
                         <motion.span
-                          className="absolute inset-0 rounded-xl border border-gold-400"
+                          className="absolute inset-0 rounded-xl border border-[#D4AF37]"
                           animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
                           transition={{ duration: 1.4, repeat: Infinity }}
                         />
                       )}
                     </div>
-                    <span className="hidden text-[10px] font-medium text-silver-600 sm:block">
+                    <span className="hidden text-[10px] font-medium text-[#B2C9C5] sm:block">
                       {agent.name.replace(" Agent", "")}
                     </span>
                   </div>
@@ -169,19 +169,19 @@ export default function Agents() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
-                className="mt-4 flex items-center gap-3 rounded-2xl border border-silver-300 bg-white p-4 dark:border-abyss-700/60 dark:bg-abyss-800"
+                className="mt-4 flex items-center gap-3 rounded-2xl border border-[#96C4BB]/25 bg-[#0E1715]/90 p-4 backdrop-blur-xl shadow-xl"
               >
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold-500/15 text-gold-600">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#D4AF37]/20 text-[#D4AF37] ring-1 ring-[#D4AF37]/30">
                   {(() => {
                     const I = ICONS[activeAgent.id];
                     return <I className="h-5 w-5" />;
                   })()}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="font-display font-semibold tracking-tight">{activeAgent.name}</p>
-                  <p className="text-sm text-silver-600 dark:text-silver-600">{activeAgent.role}</p>
+                  <p className="font-display font-semibold tracking-tight text-[#F8FAFA]">{activeAgent.name}</p>
+                  <p className="text-sm text-[#B2C9C5]">{activeAgent.role}</p>
                 </div>
-                <span className="text-xs font-medium capitalize text-gold-600">{activeAgent.status}</span>
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">{activeAgent.status}</span>
               </motion.div>
             )}
           </AnimatePresence>
@@ -197,8 +197,8 @@ export default function Agents() {
                 interactive
                 onClick={() => setSelected((s) => (s === agent.id ? null : agent.id))}
                 className={cn(
-                  "cursor-pointer",
-                  selected === agent.id && "border-gold-400 dark:border-gold-400/50"
+                  "cursor-pointer bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-md transition-all hover:border-[#96C4BB]/50",
+                  selected === agent.id && "border-[#D4AF37] shadow-[0_0_20px_rgba(212,175,55,0.25)]"
                 )}
               >
                 <CardBody className="flex items-center gap-3 p-4">
@@ -206,26 +206,26 @@ export default function Agents() {
                     className={cn(
                       "flex h-10 w-10 items-center justify-center rounded-xl",
                       agent.status === "active"
-                        ? "bg-gold-500 text-white"
+                        ? "bg-gradient-to-tr from-[#D4AF37] to-[#F59E0B] text-[#070B0A] shadow-md shadow-[#D4AF37]/30 font-bold"
                         : agent.status === "complete"
-                        ? "bg-emerald-500/15 text-emerald-500"
-                        : "bg-silver-200 text-silver-600 dark:bg-white/5"
+                        ? "bg-[#507C7C]/30 text-[#96C4BB] ring-1 ring-[#96C4BB]/30"
+                        : "bg-[#111A18] text-[#B2C9C5] border border-[#96C4BB]/20"
                     )}
                   >
                     <Icon className="h-5 w-5" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium">{agent.name}</p>
-                    <p className="truncate text-xs text-silver-600">{agent.role}</p>
+                    <p className="text-sm font-medium text-[#F8FAFA]">{agent.name}</p>
+                    <p className="truncate text-xs text-[#B2C9C5]">{agent.role}</p>
                   </div>
                   <span
                     className={cn(
                       "text-xs font-medium capitalize",
                       agent.status === "active"
-                        ? "text-gold-600"
+                        ? "text-[#D4AF37] font-semibold"
                         : agent.status === "complete"
-                        ? "text-emerald-500"
-                        : "text-silver-600"
+                        ? "text-[#96C4BB]"
+                        : "text-[#B2C9C5]"
                     )}
                   >
                     {agent.status}

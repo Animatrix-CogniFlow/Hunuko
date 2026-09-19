@@ -28,35 +28,35 @@ export function SessionCard({ session }: { session: LearningSession }) {
         <div className="p-5">
           <div className="flex items-center justify-between">
             <Badge tone="gold">{KIND_LABEL[session.kind]}</Badge>
-            <span className="text-xs text-silver-500 dark:text-cobalt-400">{timeAgo(session.updatedAt)}</span>
+            <span className="text-xs text-silver-500 dark:text-[#A3B8B5]">{timeAgo(session.updatedAt)}</span>
           </div>
 
-          <h3 className="mt-3 font-display text-lg font-semibold tracking-tight text-silver-900 dark:text-cobalt-100">
+          <h3 className="mt-3 font-display text-lg font-semibold tracking-tight text-silver-900 dark:text-[#F8FAFA]">
             {session.title}
           </h3>
-          <p className="text-sm text-silver-600 dark:text-cobalt-300">{session.subject}</p>
+          <p className="text-xs text-silver-600 dark:text-[#A3B8B5]">{session.subject}</p>
 
           {/* Progress bar */}
           <div className="mt-4">
             <div className="mb-1.5 flex items-center justify-between text-xs">
-              <span className="text-silver-500 dark:text-cobalt-400">Progress</span>
-              <span className="font-medium text-silver-800 dark:text-cobalt-200">{session.progress}%</span>
+              <span className="text-silver-500 dark:text-[#A3B8B5]">Progress</span>
+              <span className="font-semibold text-silver-800 dark:text-[#D4AF37]">{session.progress}%</span>
             </div>
-            <div className="h-1.5 overflow-hidden rounded-full bg-silver-200 dark:bg-abyss-700">
+            <div className="h-1.5 overflow-hidden rounded-full bg-silver-200 dark:bg-[#111A18] border border-transparent dark:border-[#96C4BB]/10">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${session.progress}%` }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full rounded-full bg-gradient-to-r from-gold-400 to-gold-600 dark:from-cobalt-400 dark:to-cobalt-600"
+                className="h-full rounded-full bg-gradient-to-r from-[#507C7C] via-[#96C4BB] to-[#D4AF37]"
               />
             </div>
           </div>
 
           <button
             onClick={() => navigate(KIND_ROUTE[session.kind])}
-            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-gold-600 transition-all hover:gap-2.5 dark:text-cobalt-400"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[#D4AF37] transition-all hover:gap-2.5 hover:text-[#e0be4d] cursor-pointer"
           >
-            <Play className="h-3.5 w-3.5" /> Continue
+            <Play className="h-3.5 w-3.5 fill-current" /> Continue
           </button>
         </div>
       </SpotlightCard>

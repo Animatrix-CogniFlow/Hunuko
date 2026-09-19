@@ -25,20 +25,20 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", stiffness: 320, damping: 34 }}
-            className="absolute left-0 top-0 h-full w-72 border-r border-silver-200 bg-silver-100 p-4 dark:border-abyss-700 dark:bg-abyss-900"
+            className="absolute left-0 top-0 h-full w-72 border-r border-[#96C4BB]/15 bg-[#0A100E]/95 p-4 backdrop-blur-2xl shadow-2xl"
           >
-            <div className="mb-6 flex items-center justify-between">
-              <BrandLogo />
+            <div className="mb-6 flex items-center justify-between border-b border-[#96C4BB]/10 pb-4">
+              <BrandLogo size={30} />
               <button
                 onClick={onClose}
                 aria-label="Close menu"
-                className="rounded-lg p-1.5 text-silver-500 hover:bg-silver-200 dark:text-cobalt-400 dark:hover:bg-abyss-700"
+                className="rounded-lg p-1.5 text-[#B2C9C5] hover:bg-[#111A18] hover:text-[#F8FAFA] transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <nav className="space-y-1">
+            <nav className="space-y-1.5">
               {NAV_ITEMS.map((item) => (
                 <NavLink
                   key={item.to}
@@ -47,14 +47,14 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
                   onClick={onClose}
                   className={({ isActive }) =>
                     cn(
-                      "flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-colors",
+                      "flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-medium transition-all",
                       isActive
-                        ? "bg-gold-50 text-gold-700 dark:bg-cobalt-500/10 dark:text-cobalt-200"
-                        : "text-silver-700 hover:bg-silver-200 hover:text-silver-900 dark:text-cobalt-300 dark:hover:bg-abyss-700 dark:hover:text-cobalt-100"
+                        ? "bg-gradient-to-r from-[#507C7C]/20 to-[#96C4BB]/10 text-white border-l-4 border-[#D4AF37] font-semibold shadow-[0_0_15px_rgba(80,124,124,0.15)]"
+                        : "text-[#B2C9C5] hover:bg-[#507C7C]/10 hover:text-[#F8FAFA] border-l-4 border-transparent"
                     )
                   }
                 >
-                  <item.icon className="h-5 w-5 shrink-0" />
+                  <item.icon className="h-5 w-5 shrink-0 text-[#96C4BB]" />
                   {item.label}
                 </NavLink>
               ))}

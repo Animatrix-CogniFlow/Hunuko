@@ -54,6 +54,11 @@ export function AppShell() {
     return () => unsubscribeAuth();
   }, []);
 
+  // Enforce Animatrix dark tranquil greenscape on authenticated shell
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
+
   // Sync URL deckId to selectedDocumentId if present
   useEffect(() => {
     const segments = location.pathname.split("/");
@@ -67,14 +72,14 @@ export function AppShell() {
   }, [location.pathname, selectedDocumentId, selectDocument]);
 
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex min-h-screen w-full bg-[#070B0A] text-[#F8FAFA] selection:bg-[#507C7C]/40">
       <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((c) => !c)} />
       <MobileNav open={mobileOpen} onClose={() => setMobileOpen(false)} />
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col bg-[#070B0A]">
         <Topbar onOpenMobile={() => setMobileOpen(true)} />
-        <main className="relative flex-1 cf-grid-bg overflow-hidden">
-          <AmbientBackground />
+        <main className="relative flex-1 cf-grid-bg overflow-hidden bg-[#070B0A]">
+          <AmbientBackground variant="app" />
           <Suspense fallback={<PageLoader />}>
             <AnimatePresence mode="wait">
               <PageTransition key={location.pathname}>

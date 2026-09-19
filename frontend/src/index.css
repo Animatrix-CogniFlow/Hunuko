@@ -36,25 +36,25 @@
   --color-silver-800: #1e293b;
   --color-silver-900: #0f172a;
 
-  /* Deep blue / dark-mode scale */
-  --color-abyss-950: #050811;
-  --color-abyss-900: #0c1226;
-  --color-abyss-850: #141d3c;
-  --color-abyss-800: #1c2a54;
-  --color-abyss-700: #263970;
-  --color-abyss-600: #334a8f;
+  /* Deep Void / Slate Abyss dark-mode scale (Animatrix palette) */
+  --color-abyss-950: #050807;
+  --color-abyss-900: #070B0A;
+  --color-abyss-850: #0D1514;
+  --color-abyss-800: #111A18;
+  --color-abyss-700: #152220;
+  --color-abyss-600: #1F302D;
 
-  /* Blue accent scale for dark mode */
-  --color-cobalt-50:  #f0f5ff;
-  --color-cobalt-100: #e6efff;
-  --color-cobalt-200: #c2d7ff;
-  --color-cobalt-300: #9cc0ff;
-  --color-cobalt-400: #70a1ff;
-  --color-cobalt-500: #4d82ff;
-  --color-cobalt-600: #2962ff;
-  --color-cobalt-700: #0e30ab;
-  --color-cobalt-800: #0b2487;
-  --color-cobalt-900: #081a63;
+  /* Tranquil Teal & Highlight scale */
+  --color-cobalt-50:  #f2f7f6;
+  --color-cobalt-100: #e2eeec;
+  --color-cobalt-200: #c5dfdb;
+  --color-cobalt-300: #a3c9c2;
+  --color-cobalt-400: #96C4BB;
+  --color-cobalt-500: #507C7C;
+  --color-cobalt-600: #3f6565;
+  --color-cobalt-700: #2f4d4d;
+  --color-cobalt-800: #1f3333;
+  --color-cobalt-900: #121f1f;
 
   /* ============================================================
      Animatrix Showcase Theme: Tranquil Greenscape / Deep Void
@@ -177,38 +177,45 @@ html.dark :focus-visible {
 }
 
 /* Grid background — light */
-.cf-grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(100, 90, 60, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(100, 90, 60, 0.07) 1px, transparent 1px);
-  background-size: 44px 44px;
-}
-/* Grid background — dark */
-html.dark .cf-grid-bg {
-  background-image:
-    linear-gradient(to right, rgba(60, 100, 220, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(60, 100, 220, 0.06) 1px, transparent 1px);
-}
-/* Mobile GPU compositing fix */
+/* Grid background — light */
 .cf-grid-bg {
   transform: translateZ(0);
   will-change: transform;
   background-image:
-    linear-gradient(to right, rgba(100, 90, 60, 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(100, 90, 60, 0.07) 1px, transparent 1px);
+    linear-gradient(to right, rgba(80, 124, 124, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(80, 124, 124, 0.06) 1px, transparent 1px);
   background-size: 44px 44px;
 }
 
+/* Grid background — dark (Animatrix tranquil teal grid) */
 html.dark .cf-grid-bg {
   background-image:
-    linear-gradient(to right, rgba(60, 100, 220, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(60, 100, 220, 0.06) 1px, transparent 1px);
+    linear-gradient(to right, rgba(80, 124, 124, 0.09) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(80, 124, 124, 0.09) 1px, transparent 1px);
 }
 
-/* Also fix backdrop-blur on mobile */
+/* Glassmorphic panel utility classes */
+.glass-panel {
+  background: rgba(14, 23, 21, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(150, 196, 187, 0.2);
+}
+
+.glass-panel-glow {
+  background: rgba(14, 23, 21, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(150, 196, 187, 0.4);
+  box-shadow: 0 0 25px rgba(80, 124, 124, 0.25);
+}
+
+/* Fix backdrop-blur on mobile */
 @supports (-webkit-overflow-scrolling: touch) {
   .backdrop-blur-xl,
-  .backdrop-blur {
+  .backdrop-blur,
+  .glass-panel,
+  .glass-panel-glow {
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
   }

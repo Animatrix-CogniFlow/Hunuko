@@ -85,7 +85,7 @@ export default function DeckDetail() {
     <PageContainer>
       <button
         onClick={() => navigate("/app/study")}
-        className="mb-4 inline-flex items-center gap-1.5 text-sm text-silver-600 transition hover:text-gold-600 dark:text-silver-600"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-[#A3B8B5] transition hover:text-[#D4AF37] cursor-pointer"
       >
         <ArrowLeft className="h-4 w-4" /> All decks
       </button>
@@ -94,16 +94,24 @@ export default function DeckDetail() {
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Badge tone="neutral">{deck.subject}</Badge>
+            <Badge tone="teal">{deck.subject}</Badge>
           </div>
-          <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight">{deck.title}</h1>
+          <h1 className="mt-2 font-display text-2xl font-bold tracking-tight text-[#F8FAFA]">{deck.title}</h1>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={() => navigate(`/app/study/${deck.document_id}/review`)} disabled={cards.length === 0}>
-            <Brain className="h-4 w-4" /> Review {due > 0 && `(${due})`}
+        <div className="flex gap-2.5">
+          <Button
+            onClick={() => navigate(`/app/study/${deck.document_id}/review`)}
+            disabled={cards.length === 0}
+            className="bg-[#D4AF37] text-[#070B0A] hover:bg-[#e0be4d] font-bold shadow-lg shadow-[#D4AF37]/20 border-none cursor-pointer"
+          >
+            <Brain className="h-4 w-4 mr-1.5" /> Review {due > 0 && `(${due})`}
           </Button>
-          <Button variant="secondary" onClick={() => navigate(`/app/study/${deck.document_id}/quiz`)}>
-            <ListChecks className="h-4 w-4" /> Take quiz
+          <Button
+            variant="secondary"
+            onClick={() => navigate(`/app/study/${deck.document_id}/quiz`)}
+            className="border-[#96C4BB]/30 text-[#F8FAFA] hover:bg-[#507C7C]/20 cursor-pointer"
+          >
+            <ListChecks className="h-4 w-4 mr-1.5 text-[#96C4BB]" /> Take quiz
           </Button>
         </div>
       </div>
@@ -116,7 +124,7 @@ export default function DeckDetail() {
       </div>
 
       {/* Tabs */}
-      <div className="mt-8 flex gap-1 rounded-xl border border-silver-300 bg-white/60 p-1 dark:border-abyss-700/60 dark:bg-abyss-800/60">
+      <div className="mt-8 flex gap-1 rounded-2xl border border-[#96C4BB]/20 bg-[#0E1715]/85 p-1.5 backdrop-blur-xl">
         {([
           ["cards", "Flashcards", Brain],
           ["quiz", "Quiz", ListChecks],
@@ -125,18 +133,18 @@ export default function DeckDetail() {
           <button
             key={key}
             onClick={() => setTab(key)}
-            className={`relative flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-              tab === key ? "text-gold-600 dark:text-white" : "text-silver-600 dark:text-silver-600"
+            className={`relative flex flex-1 items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-all cursor-pointer ${
+              tab === key ? "text-[#F8FAFA]" : "text-[#A3B8B5] hover:text-[#F8FAFA]"
             }`}
           >
             {tab === key && (
               <motion.span
                 layoutId="deck-tab"
-                className="absolute inset-0 rounded-lg bg-gold-500 dark:bg-gold-500/10"
+                className="absolute inset-0 rounded-xl bg-[#507C7C]/25 border border-[#96C4BB]/35 shadow-[0_0_12px_rgba(80,124,124,0.2)]"
                 transition={{ type: "spring", stiffness: 400, damping: 32 }}
               />
             )}
-            <Icon className="relative z-10 h-4 w-4" />
+            <Icon className="relative z-10 h-4 w-4 text-[#96C4BB]" />
             <span className="relative z-10">{label}</span>
           </button>
         ))}

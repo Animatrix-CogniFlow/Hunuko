@@ -158,20 +158,26 @@ export function FloatingTutor({ persona, documentId }: FloatingTutorProps) {
               initial={{ opacity: 0, y: 20, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9, y: 10 }}
-              className="relative flex h-[420px] w-[320px] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl border border-silver-200 dark:bg-abyss-950 dark:border-white/10 cursor-auto"
+              className="relative flex h-[440px] w-[340px] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl border border-silver-200 dark:bg-[#0E1715]/95 dark:border-[#96C4BB]/30 dark:shadow-[0_0_35px_rgba(0,0,0,0.8)] backdrop-blur-2xl cursor-auto"
               onPointerDownCapture={(e) => e.stopPropagation()}
             >
               {/* Header */}
-              <div className={cn("flex items-center justify-between px-4 py-3 text-white", vibe.color)}>
+              <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-[#0E1715] to-[#131F1C] border-b border-[#96C4BB]/20 text-white">
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">{vibe.avatar}</span>
-                  <span className="font-display font-bold text-sm">{vibe.name}</span>
+                  <div className="relative flex items-center justify-center">
+                    <img src="/assets/mascot.jpg" alt="Hunuko" className="h-7 w-7 rounded-full object-cover border border-[#96C4BB]/40 shadow-sm" />
+                    <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-[#D4AF37] ring-1 ring-black" />
+                  </div>
+                  <div>
+                    <span className="font-display font-bold text-sm text-[#F8FAFA] block leading-tight">{vibe.name}</span>
+                    <span className="text-[10px] text-[#96C4BB] font-medium block">Visual AI Tutor</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <select
                     value={language}
                     onChange={(e) => setLanguage(e.target.value)}
-                    className="bg-black/20 text-white text-xs font-medium rounded-md px-2 py-1 outline-none border-none cursor-pointer appearance-none"
+                    className="bg-[#111A18] text-[#B2C9C5] text-xs font-medium rounded-lg px-2 py-1 outline-none border border-[#96C4BB]/20 cursor-pointer appearance-none"
                   >
                     <option value="en">English</option>
                     <option value="yo">Yoruba</option>
@@ -186,7 +192,7 @@ export function FloatingTutor({ persona, documentId }: FloatingTutorProps) {
                   </select>
                   <button
                     onClick={() => setIsOpen(false)}
-                    className="rounded-full bg-white/20 p-1 hover:bg-white/30 transition-colors"
+                    className="rounded-full bg-white/10 p-1 hover:bg-white/20 text-[#B2C9C5] hover:text-white transition-colors"
                   >
                     <X className="h-4 w-4" />
                   </button>
@@ -195,15 +201,16 @@ export function FloatingTutor({ persona, documentId }: FloatingTutorProps) {
 
               {/* Document context indicator */}
               {documentId && (
-                <div className="px-4 py-1.5 bg-gold-50 dark:bg-abyss-800 border-b border-gold-100 dark:border-white/5">
-                  <p className="text-xs text-gold-700 dark:text-gold-400">
-                    Studying your uploaded document
+                <div className="px-4 py-1.5 bg-gold-50 dark:bg-[#111A18] border-b border-gold-100 dark:border-[#96C4BB]/15 flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+                  <p className="text-xs text-[#D4AF37] font-medium truncate">
+                    Studying active document
                   </p>
                 </div>
               )}
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-silver-50 dark:bg-abyss-900/50">
+              <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-silver-50 dark:bg-[#070B0A]/70">
                 {messages.map((msg, idx) => (
                   <div
                     key={idx}
@@ -214,17 +221,17 @@ export function FloatingTutor({ persona, documentId }: FloatingTutorProps) {
                   >
                     <div
                       className={cn(
-                        "max-w-[80%] rounded-2xl px-3 py-2 text-sm leading-relaxed",
+                        "max-w-[85%] rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed shadow-sm",
                         msg.role === "user"
-                          ? "bg-gold-500 text-abyss-950 rounded-br-none"
-                          : "bg-white border border-silver-200 text-abyss-900 dark:bg-abyss-800 dark:border-white/5 dark:text-silver-300 rounded-bl-none"
+                          ? "bg-[#D4AF37] text-[#070B0A] font-semibold rounded-br-none shadow-[0_2px_10px_rgba(212,175,55,0.25)]"
+                          : "bg-white border border-silver-200 text-abyss-900 dark:bg-[#131F1C] dark:border-[#96C4BB]/20 dark:text-[#F8FAFA] rounded-bl-none"
                       )}
                     >
                       {msg.text === "..." ? (
-                        <span className="flex gap-1">
-                          <span className="animate-bounce">•</span>
-                          <span className="animate-bounce" style={{ animationDelay: "0.1s" }}>•</span>
-                          <span className="animate-bounce" style={{ animationDelay: "0.2s" }}>•</span>
+                        <span className="flex gap-1 py-1">
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#96C4BB] animate-bounce" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#96C4BB] animate-bounce [animation-delay:0.15s]" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-[#96C4BB] animate-bounce [animation-delay:0.3s]" />
                         </span>
                       ) : (
                         <MarkdownLite text={msg.text} />
@@ -237,20 +244,20 @@ export function FloatingTutor({ persona, documentId }: FloatingTutorProps) {
               {/* Input */}
               <form
                 onSubmit={handleSendMessage}
-                className="border-t border-silver-200 bg-white p-3 dark:border-white/10 dark:bg-abyss-950"
+                className="border-t border-silver-200 bg-white p-3 dark:border-[#96C4BB]/20 dark:bg-[#0E1715]"
               >
                 <div className="flex items-center justify-between mb-2 px-1">
                   <button
                     type="button"
                     onClick={() => setSearchWeb(!searchWeb)}
                     className={cn(
-                      "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold transition-all border shadow-sm cursor-pointer",
+                      "flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold transition-all border shadow-sm cursor-pointer",
                       searchWeb 
-                        ? "bg-gold-500/10 border-gold-500/30 text-gold-700 dark:text-gold-400" 
-                        : "bg-silver-50 border-silver-200 text-silver-500 hover:bg-silver-100 dark:bg-abyss-900 dark:border-white/5 dark:text-silver-400 dark:hover:bg-white/5"
+                        ? "bg-[#D4AF37]/15 border-[#D4AF37]/40 text-[#D4AF37]" 
+                        : "bg-silver-50 border-silver-200 text-silver-500 hover:bg-silver-100 dark:bg-[#111A18] dark:border-[#96C4BB]/20 dark:text-[#A3B8B5] dark:hover:bg-[#152220]"
                     )}
                   >
-                    <Globe className={cn("h-3.5 w-3.5", searchWeb && "animate-pulse")} />
+                    <Globe className={cn("h-3 w-3", searchWeb && "animate-pulse text-[#D4AF37]")} />
                     <span>Web Research {searchWeb ? "ON" : "OFF"}</span>
                   </button>
                 </div>
@@ -261,14 +268,14 @@ export function FloatingTutor({ persona, documentId }: FloatingTutorProps) {
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask your AI Tutor..."
                     disabled={isLoading}
-                    className="w-full rounded-full border border-silver-300 bg-silver-50 px-4 py-2 text-sm outline-none focus:border-gold-500 dark:border-white/10 dark:bg-abyss-900 dark:text-white disabled:opacity-50"
+                    className="w-full rounded-xl border border-silver-300 bg-silver-50 px-3.5 py-2 text-xs outline-none focus:border-[#96C4BB] dark:border-[#96C4BB]/25 dark:bg-[#111A18] dark:text-[#F8FAFA] dark:placeholder-[#A3B8B5]/50 disabled:opacity-50"
                   />
                   <button
                     type="submit"
                     disabled={!input.trim() || isLoading}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold-500 text-abyss-950 disabled:opacity-50 transition-transform active:scale-95"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#D4AF37] text-[#070B0A] hover:bg-[#e0be4d] disabled:opacity-50 transition-all shadow-md shadow-[#D4AF37]/20 active:scale-95 cursor-pointer"
                   >
-                    <Send className="h-4 w-4 ml-0.5" />
+                    <Send className="h-3.5 w-3.5 ml-0.5" />
                   </button>
                 </div>
               </form>
@@ -278,20 +285,22 @@ export function FloatingTutor({ persona, documentId }: FloatingTutorProps) {
 
         {/* FLOATING BUTTON */}
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.06, y: -2 }}
+          whileTap={{ scale: 0.94 }}
           onClick={() => setIsOpen(!isOpen)}
-          className={cn(
-            "flex h-16 w-16 items-center justify-center rounded-full shadow-[0_10px_40px_rgba(0,0,0,0.2)] border-4 border-white dark:border-abyss-900 text-3xl cursor-grab active:cursor-grabbing",
-            vibe.color
-          )}
+          className="relative flex h-14 w-14 items-center justify-center rounded-2xl shadow-[0_0_25px_rgba(80,124,124,0.35)] border-2 border-[#96C4BB]/40 bg-gradient-to-tr from-[#0E1715] to-[#131F1C] cursor-pointer overflow-hidden group"
         >
-          <span className="drop-shadow-md z-10">{vibe.avatar}</span>
+          <img
+            src="/assets/mascot.jpg"
+            alt="Hunuko AI Tutor"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+          />
+          <span className="absolute bottom-1 right-1 h-2.5 w-2.5 rounded-full bg-[#D4AF37] border-2 border-[#070B0A] shadow-[0_0_8px_#D4AF37]" />
           {!isOpen && (
             <motion.div
-              className="absolute inset-0 rounded-full border-2 border-white/40"
-              animate={{ scale: [1, 1.4, 1], opacity: [0.8, 0, 0.8] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute inset-0 rounded-2xl border-2 border-[#96C4BB]/50"
+              animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0, 0.6] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
             />
           )}
         </motion.div>

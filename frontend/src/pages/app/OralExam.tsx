@@ -261,16 +261,16 @@ export default function OralExam() {
     <PageContainer>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="font-display text-2xl font-semibold tracking-tight">
+        <h1 className="font-display text-2xl font-semibold tracking-tight text-[#F8FAFA]">
           Voice Practice Partner
         </h1>
-        <p className="mt-1 text-sm text-silver-600 dark:text-cobalt-400/70">
+        <p className="mt-1 text-sm text-[#B2C9C5]">
           Practice speaking your answers out loud. Our AI tutor will help you improve and provide friendly tips on your understanding.
         </p>
       </div>
 
       {error && (
-        <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-rose-300 bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:border-rose-800/50 dark:bg-rose-900/20 dark:text-rose-300">
+        <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-300 backdrop-blur-md">
           <AlertCircle className="h-4 w-4 shrink-0" />
           {error}
         </div>
@@ -278,15 +278,15 @@ export default function OralExam() {
 
       {/* ── Select stage ── */}
       {stage === "select" && (
-        <Card className="mx-auto max-w-md">
+        <Card className="mx-auto max-w-md bg-[#0E1715]/85 border-[#96C4BB]/25 backdrop-blur-xl shadow-2xl">
           <CardBody className="space-y-5">
-            <h2 className="font-display text-lg font-semibold tracking-tight">
+            <h2 className="font-display text-lg font-semibold tracking-tight text-[#F8FAFA]">
               Choose Your Study Material
             </h2>
 
             {/* Document picker */}
             <div>
-              <p className="mb-1.5 text-sm font-medium text-silver-700 dark:text-cobalt-300">
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-[#96C4BB]">
                 Document
               </p>
               <div ref={docDropRef} className="relative">
@@ -294,16 +294,15 @@ export default function OralExam() {
                   onClick={() => setDocDropOpen((o) => !o)}
                   disabled={docsLoading}
                   className={cn(
-                    "flex h-11 w-full items-center gap-2.5 rounded-xl border px-3.5 text-sm transition-colors",
-                    "border-silver-300 bg-white text-silver-900 hover:border-gold-400",
-                    "dark:border-abyss-700/60 dark:bg-abyss-800/60 dark:text-cobalt-100 dark:hover:border-cobalt-400/50",
-                    docDropOpen && "border-gold-400 ring-2 ring-gold-400/20"
+                    "flex h-11 w-full items-center gap-2.5 rounded-xl border px-3.5 text-sm transition-all backdrop-blur-md",
+                    "border-[#96C4BB]/25 bg-[#111A18] text-[#F8FAFA] hover:border-[#D4AF37]",
+                    docDropOpen && "border-[#D4AF37] ring-2 ring-[#D4AF37]/20"
                   )}
                 >
                   {docsLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin text-silver-400" />
+                    <Loader2 className="h-4 w-4 animate-spin text-[#96C4BB]" />
                   ) : (
-                    <FileText className="h-4 w-4 shrink-0 text-silver-400" />
+                    <FileText className="h-4 w-4 shrink-0 text-[#D4AF37]" />
                   )}
                   <span className="flex-1 truncate text-left">
                     {docsLoading
@@ -312,7 +311,7 @@ export default function OralExam() {
                   </span>
                   <ChevronDown
                     className={cn(
-                      "h-4 w-4 shrink-0 text-silver-400 transition-transform",
+                      "h-4 w-4 shrink-0 text-[#96C4BB] transition-transform",
                       docDropOpen && "rotate-180"
                     )}
                   />
@@ -325,7 +324,7 @@ export default function OralExam() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -6, scale: 0.97 }}
                       transition={{ duration: 0.13 }}
-                      className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 max-h-52 overflow-y-auto rounded-xl border border-silver-200 bg-white p-1.5 shadow-lg dark:border-abyss-700/60 dark:bg-abyss-800"
+                      className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 max-h-52 overflow-y-auto rounded-xl border border-[#96C4BB]/30 bg-[#0E1715]/95 p-1.5 shadow-2xl backdrop-blur-2xl scrollbar-thin"
                     >
                       {documents.map((doc) => (
                         <button
@@ -337,14 +336,14 @@ export default function OralExam() {
                           className={cn(
                             "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition-colors",
                             doc.id === selectedDocId
-                              ? "bg-gold-500/10 text-gold-700 dark:bg-cobalt-600/20 dark:text-cobalt-200"
-                              : "hover:bg-silver-100 dark:hover:bg-white/5"
+                              ? "bg-[#507C7C]/30 text-[#F8FAFA] font-medium border border-[#96C4BB]/30"
+                              : "text-[#B2C9C5] hover:bg-[#111A18]/80 hover:text-[#F8FAFA]"
                           )}
                         >
-                          <FileText className="h-4 w-4 shrink-0 text-silver-400" />
+                          <FileText className="h-4 w-4 shrink-0 text-[#D4AF37]" />
                           <div className="min-w-0">
                             <p className="truncate font-medium">{doc.title}</p>
-                            <p className="truncate text-[11px] text-silver-500 dark:text-cobalt-400/60">
+                            <p className="truncate text-[11px] text-[#96C4BB]">
                               {doc.subject}
                             </p>
                           </div>
@@ -358,7 +357,7 @@ export default function OralExam() {
 
             {/* Number of questions */}
             <div>
-              <p className="mb-1.5 text-sm font-medium text-silver-700 dark:text-cobalt-300">
+              <p className="mb-1.5 text-xs font-semibold uppercase tracking-wider text-[#96C4BB]">
                 Select Question Count
               </p>
               <div className="flex gap-2">
@@ -367,10 +366,10 @@ export default function OralExam() {
                     key={n}
                     onClick={() => setTotalQ(n)}
                     className={cn(
-                      "flex-1 rounded-xl border py-2.5 text-sm font-medium transition-colors",
+                      "flex-1 rounded-xl border py-2.5 text-sm font-medium transition-all",
                       n === totalQ
-                        ? "border-gold-400 bg-gold-500/10 text-gold-700 dark:border-cobalt-400 dark:bg-cobalt-600/20 dark:text-cobalt-200"
-                        : "border-silver-300 hover:border-gold-300 dark:border-white/10 dark:hover:border-cobalt-400/40"
+                        ? "border-[#D4AF37] bg-[#D4AF37]/15 text-[#D4AF37] font-bold shadow-[0_0_10px_rgba(212,175,55,0.2)]"
+                        : "border-[#96C4BB]/20 bg-[#111A18] text-[#B2C9C5] hover:border-[#D4AF37] hover:text-[#F8FAFA]"
                     )}
                   >
                     {n}
@@ -380,7 +379,7 @@ export default function OralExam() {
             </div>
 
             <Button
-              className="w-full"
+              className="w-full bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold hover:brightness-110 shadow-lg shadow-[#D4AF37]/25 border-none"
               onClick={startExam}
               disabled={!selectedDocId || docsLoading}
             >
@@ -398,10 +397,10 @@ export default function OralExam() {
         <div className="grid gap-6 lg:grid-cols-5">
           {/* Examiner stage */}
           <div className="lg:col-span-3">
-            <div className="relative flex flex-col items-center overflow-hidden rounded-3xl border border-silver-300 bg-silver-900 p-10 dark:border-abyss-700/60 dark:bg-abyss-900">
+            <div className="relative flex flex-col items-center overflow-hidden rounded-3xl border border-[#96C4BB]/25 bg-[#070B0A]/95 p-10 shadow-2xl backdrop-blur-xl">
               <AmbientBackground variant="hero" particles={false} />
-              <div className="absolute inset-0 cf-grid-bg opacity-25" />
-              <div className="absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-gold-500/20 blur-3xl" />
+              <div className="absolute inset-0 cf-grid-bg opacity-20" />
+              <div className="absolute left-1/2 top-1/3 h-72 w-72 -translate-x-1/2 rounded-full bg-[#507C7C]/15 blur-3xl" />
 
               {/* Speech control */}
               <div className="absolute right-6 top-6 z-10">
@@ -415,10 +414,10 @@ export default function OralExam() {
                       speak(question.question);
                     }
                   }}
-                  className="rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition-colors"
+                  className="rounded-full bg-[#111A18] border border-[#96C4BB]/30 p-2 text-[#F8FAFA] hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all shadow-md"
                   title={readAloud ? "Disable read aloud" : "Enable read aloud"}
                 >
-                  {readAloud ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+                  {readAloud ? <Volume2 className="h-4 w-4 text-[#D4AF37]" /> : <VolumeX className="h-4 w-4 text-[#B2C9C5]" />}
                 </button>
               </div>
 
@@ -430,10 +429,10 @@ export default function OralExam() {
                     className={cn(
                       "h-1.5 w-6 rounded-full transition-colors",
                       i < qIndex
-                        ? "bg-emerald-400"
+                        ? "bg-[#507C7C]"
                         : i === qIndex
-                        ? "bg-gold-400 dark:bg-cobalt-400"
-                        : "bg-white/20"
+                        ? "bg-[#D4AF37] shadow-[0_0_8px_#D4AF37]"
+                        : "bg-[#96C4BB]/20"
                     )}
                   />
                 ))}
@@ -442,17 +441,17 @@ export default function OralExam() {
               <ExamOrb recording={stage === "recording"} analyzing={stage === "analyzing"} />
 
               <div className="relative mt-8 max-w-md text-center">
-                <p className="text-xs font-medium uppercase tracking-wider text-gold-400 dark:text-cobalt-300">
+                <p className="text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">
                   Topic {qIndex + 1} of {totalQ} {stage === "between" && `(Attempt ${currentTry} of ${maxTries})`}
                 </p>
                 <div className="mt-2 flex items-center justify-center gap-2">
-                  <div className="text-lg text-white leading-relaxed flex-1 text-center">
+                  <div className="text-lg text-[#F8FAFA] leading-relaxed flex-1 text-center font-medium">
                     {question?.question && <MarkdownLite text={question.question} />}
                   </div>
                   {question?.question && (
                     <button
                       onClick={() => speak(question.question, true)}
-                      className="rounded-full bg-white/5 p-1.5 text-gold-400 hover:bg-white/15 dark:text-cobalt-300 transition-colors shrink-0"
+                      className="rounded-full bg-[#111A18] border border-[#96C4BB]/25 p-1.5 text-[#D4AF37] hover:border-[#D4AF37] transition-colors shrink-0"
                       title="Read question aloud"
                     >
                       <Volume2 className="h-4 w-4" />
@@ -460,7 +459,7 @@ export default function OralExam() {
                   )}
                 </div>
                 {question?.key_points && question.key_points.length > 0 && (
-                  <p className="mt-2 text-xs text-white/40">
+                  <p className="mt-2 text-xs text-[#96C4BB]">
                     Tip: Try to mention: {question.key_points.slice(0, 2).join(", ")}
                   </p>
                 )}
@@ -472,8 +471,7 @@ export default function OralExam() {
                 isCorrect || currentTry >= maxTries ? (
                   <Button
                     size="lg"
-                    className="relative mt-8"
-                    variant="primary"
+                    className="relative mt-8 bg-gradient-to-r from-[#507C7C] to-[#96C4BB] text-[#070B0A] font-bold border-none hover:brightness-110 shadow-lg"
                     onClick={handleContinue}
                   >
                     <CheckCircle2 className="h-5 w-5" /> Continue
@@ -481,18 +479,22 @@ export default function OralExam() {
                 ) : (
                   <Button
                     size="lg"
-                    className="relative mt-8"
+                    className="relative mt-8 bg-[#111A18] border border-[#96C4BB]/30 text-[#F8FAFA] hover:border-[#D4AF37]"
                     variant="secondary"
                     onClick={handleTryAgain}
                   >
-                    <RotateCcw className="h-5 w-5" /> Try Again (Attempt {currentTry} of {maxTries} used)
+                    <RotateCcw className="h-5 w-5 text-[#D4AF37]" /> Try Again (Attempt {currentTry} of {maxTries} used)
                   </Button>
                 )
               ) : (
                 <Button
                   size="lg"
-                  className="relative mt-8"
-                  variant={stage === "recording" ? "danger" : "primary"}
+                  className={cn(
+                    "relative mt-8 font-bold border-none shadow-lg",
+                    stage === "recording" 
+                      ? "bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/25" 
+                      : "bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] hover:brightness-110 shadow-[#D4AF37]/25"
+                  )}
                   onClick={stage === "recording" ? stopAndSubmit : startRecording}
                   loading={stage === "analyzing"}
                   disabled={stage === "analyzing"}
@@ -509,7 +511,7 @@ export default function OralExam() {
 
               <button
                 onClick={reset}
-                className="relative mt-4 flex items-center gap-1.5 text-xs text-white/40 transition hover:text-white/70"
+                className="relative mt-4 flex items-center gap-1.5 text-xs text-[#B2C9C5] transition hover:text-[#F8FAFA]"
               >
                 <RotateCcw className="h-3.5 w-3.5" /> Cancel Session
               </button>
@@ -518,12 +520,12 @@ export default function OralExam() {
 
           {/* Transcript + feedback */}
           <div className="space-y-6 lg:col-span-2">
-            <Card>
+            <Card className="bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
               <CardBody>
-                <h3 className="mb-3 font-display font-semibold tracking-tight">
+                <h3 className="mb-3 font-display font-semibold tracking-tight text-[#F8FAFA]">
                   Conversation History
                 </h3>
-                <div className="max-h-64 space-y-3 overflow-y-auto">
+                <div className="max-h-64 space-y-3 overflow-y-auto scrollbar-thin">
                   <AnimatePresence initial={false}>
                     {transcript.map((t) => (
                       <motion.div
@@ -532,15 +534,15 @@ export default function OralExam() {
                         animate={{ opacity: 1, y: 0 }}
                         className={t.speaker === "examiner" ? "" : "text-right"}
                       >
-                        <p className="text-[11px] uppercase tracking-wider text-silver-500 dark:text-cobalt-400/60">
+                        <p className="text-[11px] uppercase tracking-wider text-[#96C4BB]">
                           {t.speaker === "examiner" ? "Tutor" : "You"}
                         </p>
                         <div
                           className={cn(
-                            "mt-1 inline-block rounded-2xl px-3.5 py-2 text-sm text-left",
+                            "mt-1 inline-block rounded-2xl px-3.5 py-2 text-sm text-left shadow-sm",
                             t.speaker === "examiner"
-                              ? "bg-silver-200 dark:bg-white/5 text-silver-950 dark:text-silver-200"
-                              : "bg-gold-500 text-white dark:bg-cobalt-600"
+                              ? "bg-[#111A18] border border-[#96C4BB]/20 text-[#F8FAFA]"
+                              : "bg-[#D4AF37] text-[#070B0A] font-semibold"
                           )}
                         >
                           <MarkdownLite text={t.text} />
@@ -552,20 +554,20 @@ export default function OralExam() {
               </CardBody>
             </Card>
 
-            <Card>
+            <Card className="bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
               <CardBody>
                 <div className="mb-3 flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-gold-600 dark:text-cobalt-300" />
-                  <h3 className="font-display font-semibold tracking-tight">
+                  <Sparkles className="h-5 w-5 text-[#D4AF37]" />
+                  <h3 className="font-display font-semibold tracking-tight text-[#F8FAFA]">
                     Feedback
                   </h3>
                   {lastEval && (
                     <span
                       className={cn(
-                        "ml-auto rounded-full px-2 py-0.5 text-xs font-semibold",
+                        "ml-auto rounded-full px-2 py-0.5 text-xs font-semibold border",
                         isCorrect
-                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
-                          : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+                          ? "bg-[#507C7C]/30 text-[#96C4BB] border-[#96C4BB]/40"
+                          : "bg-amber-500/20 text-amber-300 border-amber-500/30"
                       )}
                     >
                       {isCorrect ? "Correct" : `Incorrect (Try ${currentTry}/${maxTries})`}
@@ -575,45 +577,45 @@ export default function OralExam() {
                 {lastEval ? (
                   <div className="space-y-4">
                     <Metric label="Score" value={lastEval.score * 10} />
-                    <div className="text-sm text-silver-700 dark:text-cobalt-200 text-left">
+                    <div className="text-sm text-[#F8FAFA] text-left">
                       <MarkdownLite text={lastEval.feedback} />
                     </div>
 
                     {!isCorrect && currentTry < maxTries && lastEval.clue && (
-                      <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-3.5 dark:border-amber-900/30 dark:bg-amber-900/10">
+                      <div className="rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 p-3.5 backdrop-blur-sm">
                         <div className="flex items-center justify-between mb-1">
-                          <p className="text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-[#D4AF37]">
                             Clue
                           </p>
                           <button
                             onClick={() => speak(lastEval.clue!, true)}
-                            className="text-amber-600 hover:text-amber-500 dark:text-amber-400 dark:hover:text-amber-300 p-0.5"
+                            className="text-[#D4AF37] hover:brightness-125 p-0.5"
                             title="Read clue aloud"
                           >
                             <Volume2 className="h-3.5 w-3.5" />
                           </button>
                         </div>
-                        <div className="text-sm text-amber-800 dark:text-amber-300 text-left">
+                        <div className="text-sm text-[#F8FAFA] text-left">
                           <MarkdownLite text={lastEval.clue} />
                         </div>
                       </div>
                     )}
 
                     {!isCorrect && currentTry >= maxTries && lastEval.correct_answer && (
-                      <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-3.5 dark:border-blue-900/30 dark:bg-blue-900/10">
+                      <div className="rounded-xl border border-[#96C4BB]/30 bg-[#507C7C]/20 p-3.5 backdrop-blur-sm">
                         <div className="flex items-center justify-between mb-1">
-                          <p className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-[#96C4BB]">
                             Model Answer
                           </p>
                           <button
                             onClick={() => speak(lastEval.correct_answer!, true)}
-                            className="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300 p-0.5"
+                            className="text-[#96C4BB] hover:text-[#F8FAFA] p-0.5"
                             title="Read model answer aloud"
                           >
                             <Volume2 className="h-3.5 w-3.5" />
                           </button>
                         </div>
-                        <div className="text-sm text-blue-800 dark:text-blue-300 text-left">
+                        <div className="text-sm text-[#F8FAFA] text-left">
                           <MarkdownLite text={lastEval.correct_answer} />
                         </div>
                       </div>
@@ -621,13 +623,13 @@ export default function OralExam() {
 
                     {lastEval.missed && lastEval.missed.length > 0 && (
                       <div>
-                        <p className="mb-1.5 text-xs font-medium uppercase tracking-wider text-silver-500 dark:text-cobalt-400/60">
+                        <p className="mb-1.5 text-xs font-medium uppercase tracking-wider text-[#96C4BB]">
                           Suggestions for improvement
                         </p>
                         <ul className="space-y-1">
                           {lastEval.missed.map((p, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-silver-600 dark:text-cobalt-300">
-                              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
+                            <li key={i} className="flex items-start gap-2 text-sm text-[#B2C9C5]">
+                              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D4AF37]" />
                               {p}
                             </li>
                           ))}
@@ -636,7 +638,7 @@ export default function OralExam() {
                     )}
                   </div>
                 ) : (
-                  <p className="text-sm text-silver-500 dark:text-cobalt-400/60">
+                  <p className="text-sm text-[#B2C9C5]">
                     Record your answer to receive friendly AI tips.
                   </p>
                 )}
@@ -650,21 +652,28 @@ export default function OralExam() {
       {stage === "complete" && results && (
         <div className="space-y-6">
           {/* Score banner */}
-          <div className="flex flex-col items-center gap-3 rounded-3xl border border-silver-300 bg-gradient-to-br from-silver-900 to-abyss-900 px-6 py-10 text-center dark:border-abyss-700/60">
-            <CheckCircle2 className="h-12 w-12 text-emerald-400" />
-            <h2 className="font-display text-2xl font-semibold text-white">
+          <div className="flex flex-col items-center gap-4 rounded-3xl border border-[#96C4BB]/30 bg-[#0E1715]/95 px-6 py-10 text-center shadow-2xl backdrop-blur-xl">
+            <div className="relative">
+              <div className="absolute -inset-4 rounded-full bg-[#D4AF37]/20 blur-xl animate-pulse" />
+              <img
+                src="/assets/mascot.jpg"
+                alt="Hunuko Mascot"
+                className="relative h-24 w-24 rounded-full object-cover shadow-2xl ring-2 ring-[#D4AF37]"
+              />
+            </div>
+            <h2 className="font-display text-2xl font-semibold text-[#F8FAFA]">
               Session completed!
             </h2>
-            <p className="text-white/60 text-sm">
+            <p className="text-[#B2C9C5] text-sm">
               {results.title} · {results.subject}
             </p>
-            <div className="mt-2 flex items-baseline gap-1">
-              <span className="font-display text-5xl font-bold text-gold-400 dark:text-cobalt-300">
+            <div className="mt-2 flex items-baseline gap-2">
+              <span className="font-display text-5xl font-bold text-[#D4AF37]">
                 {Math.round(results.average_score * 10)}%
               </span>
-              <span className="text-white/40 text-sm">average grade</span>
+              <span className="text-[#B2C9C5] text-sm font-medium">average grade</span>
             </div>
-            <Button variant="secondary" onClick={reset} className="mt-4">
+            <Button onClick={reset} className="mt-4 bg-gradient-to-r from-[#D4AF37] to-[#F59E0B] text-[#070B0A] font-bold border-none hover:brightness-110 shadow-lg shadow-[#D4AF37]/25 px-6">
               <RotateCcw className="h-4 w-4" /> Start new session
             </Button>
           </div>
@@ -672,30 +681,30 @@ export default function OralExam() {
           {/* Per-question breakdown */}
           <div className="grid gap-4 sm:grid-cols-2">
             {results.answers.map((a, i) => (
-              <Card key={a.question_id}>
+              <Card key={a.question_id} className="bg-[#0E1715]/85 border-[#96C4BB]/20 backdrop-blur-xl shadow-xl">
                 <CardBody>
                   <div className="mb-2 flex items-center justify-between">
-                    <p className="text-xs font-medium uppercase tracking-wider text-silver-500 dark:text-cobalt-400/60">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-[#96C4BB]">
                       Topic {i + 1}
                     </p>
                     <span
                       className={cn(
-                        "rounded-full px-2 py-0.5 text-xs font-semibold",
+                        "rounded-full px-2.5 py-0.5 text-xs font-semibold border",
                         a.evaluation.score >= 8
-                          ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300"
+                          ? "bg-[#507C7C]/30 text-[#96C4BB] border-[#96C4BB]/40"
                           : a.evaluation.score >= 5
-                          ? "bg-gold-100 text-gold-700 dark:bg-gold-900/30 dark:text-gold-300"
-                          : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300"
+                          ? "bg-[#D4AF37]/20 text-[#D4AF37] border-[#D4AF37]/30"
+                          : "bg-amber-500/20 text-amber-300 border-amber-500/30"
                       )}
                     >
                       {a.evaluation.score}/10
                     </span>
                   </div>
-                  <p className="mb-2 text-sm font-medium">{a.question}</p>
-                  <p className="mb-2 text-sm text-silver-600 dark:text-cobalt-300 italic">
+                  <p className="mb-2 text-sm font-medium text-[#F8FAFA]">{a.question}</p>
+                  <p className="mb-2 text-sm text-[#B2C9C5] italic">
                     "{a.transcription}"
                   </p>
-                  <p className="text-xs text-silver-500 dark:text-cobalt-400/60">
+                  <p className="text-xs text-[#B2C9C5]/80">
                     {a.evaluation.feedback}
                   </p>
                 </CardBody>
@@ -713,17 +722,17 @@ export default function OralExam() {
 function Metric({ label, value }: { label: string; value: number }) {
   const tone =
     value >= 85
-      ? "bg-emerald-500"
+      ? "bg-gradient-to-r from-[#507C7C] to-[#96C4BB]"
       : value >= 65
-      ? "bg-gold-500 dark:bg-cobalt-400"
+      ? "bg-gradient-to-r from-[#D4AF37] to-[#F59E0B]"
       : "bg-amber-500";
   return (
     <div>
       <div className="mb-1 flex justify-between text-sm">
-        <span className="capitalize text-silver-600 dark:text-cobalt-300">{label}</span>
-        <span className="font-medium">{value}%</span>
+        <span className="capitalize text-[#B2C9C5]">{label}</span>
+        <span className="font-medium text-[#F8FAFA]">{value}%</span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-silver-200 dark:bg-white/[0.06]">
+      <div className="h-1.5 overflow-hidden rounded-full bg-[#111A18] border border-[#96C4BB]/15">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${value}%` }}

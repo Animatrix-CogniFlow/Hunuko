@@ -22,19 +22,23 @@ export function StatWidget({
   return (
     <SpotlightCard className="p-5" tilt={false}>
       <div className="flex items-start justify-between">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gold-500 text-gold-600 dark:bg-gold-500/10 dark:text-gold-600">
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#507C7C]/20 text-[#96C4BB] border border-[#96C4BB]/30 shadow-[0_0_15px_rgba(80,124,124,0.2)]">
           <Icon className="h-5 w-5" />
         </div>
-        {trend && <span className="text-xs font-medium text-emerald-500">{trend}</span>}
+        {trend && (
+          <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+            {trend}
+          </span>
+        )}
       </div>
-      <p className="mt-4 font-display text-2xl font-semibold tracking-tight">
+      <p className="mt-4 font-display text-2xl font-bold tracking-tight text-[#0B1311] dark:text-[#F8FAFA]">
         {numeric !== undefined ? (
           <Counter to={numeric} suffix={suffix} decimals={decimals} />
         ) : (
           value
         )}
       </p>
-      <p className="text-sm text-silver-600 dark:text-silver-600">{label}</p>
+      <p className="mt-1 text-xs font-medium text-[#2D3E3A] dark:text-[#A3B8B5]">{label}</p>
     </SpotlightCard>
   );
 }
