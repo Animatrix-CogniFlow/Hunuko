@@ -7,7 +7,7 @@ import { Button } from "../../../components/ui/Button";
 import { Badge } from "../../../components/ui/Badge";
 import { useChatStore } from "../../../stores/useChatStore";
 import { useAuthStore } from "../../../stores/useAuthStore";
-import { Clock, Zap, BarChart3, Settings, Play, Plus, BookOpen, Sparkles, Compass } from "lucide-react";
+import { Clock, Zap, BarChart3, Settings, Play, Plus, Sparkles, Compass } from "lucide-react";
 
 export default function CasualDashboard({ onChangePersona }: { onChangePersona: () => void }) {
   const navigate = useNavigate();

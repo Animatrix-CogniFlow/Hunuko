@@ -65,7 +65,7 @@ export const useAuthStore = create<AuthState>()(
           set({
             user,
             status: "authenticated",
-            emailVerified: !!authService["_currentFirebaseUser"]?.emailVerified,
+            emailVerified: !!(authService as any)["_currentFirebaseUser"]?.emailVerified,
           });
           return true;
         } catch (err) {

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { motion } from "framer-motion";
-import { GraduationCap, Baby, BookOpen, Compass, LayoutDashboard, Sparkles } from "lucide-react";
+import { GraduationCap, Baby, BookOpen, Compass, LayoutDashboard } from "lucide-react";
 
 import UniDashboard from "./personas/UniDashboard";
 import KidsDashboard from "./personas/KidsDashboard";
@@ -12,7 +12,7 @@ import Dashboard from "./Dashboard";
 import { PageLoader } from "../../components/ui/Loader";
 import { AmbientBackground } from "../../components/visuals/AmbientBackground";
 
-const API = (import.meta.env.VITE_API_URL as string) || "";
+const API = ((import.meta as any).env?.VITE_API_URL as string) || "";
 
 export default function AdaptiveDashboard() {
   const [persona, setPersona] = useState<string | null>(null);

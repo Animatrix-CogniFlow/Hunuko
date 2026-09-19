@@ -57,7 +57,7 @@ export default function Profile() {
 
   // Detect if user signed in with Google (no password needed for deletion)
   const isGoogleUser = !user.email?.includes("@") ||
-    !!window.__firebaseAuth?.currentUser?.providerData?.find(
+    !!(window as any).__firebaseAuth?.currentUser?.providerData?.find(
       (p: { providerId: string }) => p.providerId === "google.com"
     );
 

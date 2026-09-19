@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Upload,
-  MessagesSquare,
   Mic,
   Layers,
   Clock,
@@ -12,9 +11,7 @@ import {
   Sparkles,
   Flame,
   Play,
-  FileText,
   Plus,
-  BookOpen,
 } from "lucide-react";
 import { PageContainer } from "../../components/shell/PageContainer";
 import { StatWidget } from "../../components/dashboard/StatWidget";

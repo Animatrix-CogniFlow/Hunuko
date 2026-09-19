@@ -6,7 +6,6 @@ import {
   FileText,
   CheckCircle2,
   Loader2,
-  Sparkles,
   Brain,
   Video,
   ArrowRight,

@@ -12,7 +12,7 @@ interface UploadState {
   reset: () => void;
 }
 
-export const useUploadStore = create<UploadState>((set, get) => ({
+export const useUploadStore = create<UploadState>((set) => ({
   uploads: [],
   stage: "",
   lastUploadResult: null,

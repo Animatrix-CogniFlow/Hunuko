@@ -7,7 +7,7 @@ import { Button } from "../../../components/ui/Button";
 import { Badge } from "../../../components/ui/Badge";
 import { useChatStore } from "../../../stores/useChatStore";
 import { useAuthStore } from "../../../stores/useAuthStore";
-import { Terminal, Cpu, Settings, Play, Plus, BookOpen, Sparkles, GraduationCap } from "lucide-react";
+import { Terminal, Cpu, Settings, Play, Plus, BookOpen, GraduationCap } from "lucide-react";
 
 export default function UniDashboard({ onChangePersona }: { onChangePersona: () => void }) {
   const navigate = useNavigate();

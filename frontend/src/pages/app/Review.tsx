@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, RotateCcw, Check, Sparkles, Trophy, PartyPopper } from "lucide-react";
+import { ArrowLeft, RotateCcw, Check, Sparkles, Trophy } from "lucide-react";
 import { PageContainer } from "../../components/shell/PageContainer";
 import { Button } from "../../components/ui/Button";
 import { Badge } from "../../components/ui/Badge";

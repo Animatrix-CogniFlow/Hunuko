@@ -255,7 +255,6 @@ export default function OralExam() {
   }
 
   const selectedDoc = documents.find((d) => d.id === selectedDocId);
-  const isActive = stage === "recording" || stage === "analyzing";
 
   return (
     <PageContainer>

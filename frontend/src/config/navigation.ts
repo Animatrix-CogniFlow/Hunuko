@@ -1,6 +1,5 @@
 import {
   LayoutDashboard,
-  MessagesSquare,
   Upload,
   Sparkles,
   Mic,

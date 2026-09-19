@@ -111,10 +111,8 @@ export const contentService = {
     const uploadPromise = new Promise<string>((resolve, reject) => {
       uploadTask.on(
         "state_changed",
-        (snapshot) => {
-          const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 20);
-          // Yield progress from 0% to 20% for storage upload
-          // Since we are inside a promise and can't yield directly to generator, we handle it
+        (_snapshot) => {
+          // Progress tracked by generator stages
         },
         (err) => reject(err),
         async () => {

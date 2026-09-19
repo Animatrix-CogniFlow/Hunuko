@@ -7,7 +7,7 @@ import { Button } from "../../../components/ui/Button";
 import { Badge } from "../../../components/ui/Badge";
 import { useChatStore } from "../../../stores/useChatStore";
 import { useAuthStore } from "../../../stores/useAuthStore";
-import { BookOpen, Target, Plus, Play, Sparkles, HelpCircle, GraduationCap, Settings, Layers } from "lucide-react";
+import { BookOpen, Plus, Play, Sparkles, GraduationCap, Settings } from "lucide-react";
 
 export default function SecondaryDashboard({ onChangePersona }: { onChangePersona: () => void }) {
   const navigate = useNavigate();

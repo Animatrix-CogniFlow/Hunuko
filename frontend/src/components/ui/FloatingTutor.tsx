@@ -1,6 +1,6 @@
 import { useState, useRef, FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, MessageCircle, Globe } from "lucide-react";
+import { X, Send, Globe } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import { aiService } from "../../services/aiService";
